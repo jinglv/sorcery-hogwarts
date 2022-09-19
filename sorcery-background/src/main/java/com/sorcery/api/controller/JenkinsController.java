@@ -26,7 +26,7 @@ import java.util.Objects;
  * @date 2021/01/19
  */
 @Slf4j
-@Api(tags = "测试Jenkins管理")
+@Api(tags = "Jenkins管理")
 @RestController
 @RequestMapping("/jenkins")
 public class JenkinsController {

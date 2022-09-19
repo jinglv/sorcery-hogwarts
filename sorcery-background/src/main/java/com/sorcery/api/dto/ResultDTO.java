@@ -3,6 +3,7 @@ package com.sorcery.api.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,27 +13,31 @@ import lombok.Setter;
  * @author jingLv
  * @date 2021/01/13
  */
-
-@ApiModel(value = "基础返回对象", description = "基础返回对象")
-@Data
+@ApiModel(value = "ResultDTO", description = "基础返回对象")
 public class ResultDTO<T> extends BaseDTO {
-    
+
     /**
      * 响应码
      */
     @ApiModelProperty(value = "返回结果码 1 成功 0 失败", required = true, example = "1", allowableValues = "1,0")
+    @Getter
+    @Setter
     private Integer resultCode;
 
     /**
      * 响应信息
      */
     @ApiModelProperty(value = "提示信息", example = "成功", allowableValues = "成功,失败")
+    @Getter
+    @Setter
     private String message;
 
     /**
      * 响应数据
      */
     @ApiModelProperty(value = "响应结果数据")
+    @Getter
+    @Setter
     private T data;
 
     public static <T> ResultDTO<T> newInstance() {

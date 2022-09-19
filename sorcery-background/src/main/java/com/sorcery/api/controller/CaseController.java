@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -30,7 +31,7 @@ import java.util.Objects;
  * @date 2021/01/19
  */
 @Slf4j
-@Api(tags = "测试用例管理")
+@Api(tags = "用例管理")
 @RestController
 @RequestMapping("/cases")
 public class CaseController {
@@ -86,13 +87,12 @@ public class CaseController {
         }
         // 获取文件上传IO流
         InputStream inputStream = caseFile.getInputStream();
-        String caseData = IOUtils.toString(inputStream, "UTF-8");
+        String caseData = IOUtils.toString(inputStream, String.valueOf(StandardCharsets.UTF_8));
         inputStream.close();
+
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         Cases cases = new Cases();
         cases.setCreateUserId(tokenDto.getUserId());
-        //BeanUtils.copyProperties(addHogwartsTestCaseDto, hogwartsTestCase);
-        // CopyUtil.copyPropertiesCglib(addHogwartsTestCaseDto, hogwartsTestCase);
         //文件类型时需要将文件中的数据进行赋值
         cases.setCaseData(caseDto.getCaseData())
                 .setCaseName(caseDto.getCaseName())

@@ -7,7 +7,7 @@ import com.sorcery.api.common.jenkins.JenkinsClient;
 import com.sorcery.api.common.utils.JenkinsUtils;
 import com.sorcery.api.common.utils.StrUtils;
 import com.sorcery.api.constants.Constants;
-import com.sorcery.api.dao.CaseMapper;
+import com.sorcery.api.dao.CaseDAO;
 import com.sorcery.api.dao.JenkinsDAO;
 import com.sorcery.api.dao.TaskCaseRelDAO;
 import com.sorcery.api.dao.TaskDAO;
@@ -40,14 +40,14 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskDAO taskDAO;
     private final JenkinsDAO jenkinsDAO;
-    private final CaseMapper caseMapper;
+    private final CaseDAO caseDAO;
     private final TaskCaseRelDAO taskCaseRelDAO;
     private final JenkinsClient jenkinsClient;
 
-    public TaskServiceImpl(TaskDAO taskDAO, JenkinsDAO jenkinsDAO, CaseMapper caseMapper, TaskCaseRelDAO taskCaseRelDAO, JenkinsClient jenkinsClient) {
+    public TaskServiceImpl(TaskDAO taskDAO, JenkinsDAO jenkinsDAO, CaseDAO caseDAO, TaskCaseRelDAO taskCaseRelDAO, JenkinsClient jenkinsClient) {
         this.taskDAO = taskDAO;
         this.jenkinsDAO = jenkinsDAO;
-        this.caseMapper = caseMapper;
+        this.caseDAO = caseDAO;
         this.taskCaseRelDAO = taskCaseRelDAO;
         this.jenkinsClient = jenkinsClient;
     }
@@ -75,7 +75,7 @@ public class TaskServiceImpl implements TaskService {
             return ResultDTO.fail("Jenkins信息为空");
         }
         // 根据测试用例Id的列表，数据库中查询测试用例
-        List<Cases> casesList = caseMapper.selectByIds(StrUtils.list2IdsStr(caseIdList));
+        List<Cases> casesList = caseDAO.selectByIds(StrUtils.list2IdsStr(caseIdList));
         // 组装测试命令
         makeTestCommand(testCommand, result, casesList);
         Task task = new Task();

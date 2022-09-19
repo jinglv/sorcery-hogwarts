@@ -4,6 +4,7 @@ import com.sorcery.api.common.exception.ServiceException;
 import com.sorcery.api.common.token.TokenDb;
 import com.sorcery.api.constants.UserConstants;
 import com.sorcery.api.dto.TokenDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -22,14 +23,11 @@ import java.util.Objects;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class LoginInterceptor implements HandlerInterceptor {
 
     private final TokenDb tokenDb;
-
-    public LoginInterceptor(TokenDb tokenDb) {
-        this.tokenDb = tokenDb;
-    }
-
+    
     /**
      * 这个方法是在访问接口之前执行的，我们只需要在这里写验证登陆状态的业务逻辑，就可以在用户调用指定接口之前验证登陆状态了
      *
@@ -83,11 +81,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
+        // 内容为空
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+        // 内容为空
     }
 }

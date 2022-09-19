@@ -1,4 +1,5 @@
 # 测试管理平台
+
 SpringBoot后台
 
 ## 功能介绍
@@ -7,65 +8,89 @@ SpringBoot后台
 
 ![image-20210318183034598](https://gitee.com/JeanLv/study_image2/raw/master///image-20210318183034598.png)
 
+## 简单运行脚本
 
+根据不同环境的配置启动服务
+
+1. 创建一个运行的shell脚本
+2. 脚本内容如下：
+
+  ```shell
+  nobup java -Xms256m -Xmx512m -XX:PermSize=64 -XX:MaxPermSize=128m -server -Dserver.port=8089 -jar sorcery.jar 'sorcery' --spring.profiles.active=dev >> ./test_info_8099.log 2>&1 &
+  ```
+
+3. 执行流程
+
+- ps -ef | grep sorcery # 查询已存在的sorcery进行
+- kill -9 已存在的进程号
+- sh shell脚本.sh # 执行启动命令
+- tail -f test_info_8099.log # 实时查看服务输出日志
+
+## 数据持久化
+
+### 技术现状
+
+1. mybatis:半自动化的持久层框架，灵活，学习成本低，便利的SQL操作，自由度高，封装性好
+2. hibernate:有良好的映射机制，开发者无需关心SQL的生成与结果映射，可以更专注与业务流程
+3. JPA:Java持久层API，是一种ORM规范。javax.persistence.*
 
 ## Jenkins调用
 
 ### Jenkins调用Maven依赖
+
 ```xml
     <!--Jenkins调用-->
-    <dependency>
-        <groupId>com.offbytwo.jenkins</groupId>
-        <artifactId>jenkins-client</artifactId>
-        <version>0.3.8</version>
-    </dependency>
+<dependency>
+    <groupId>com.offbytwo.jenkins</groupId>
+    <artifactId>jenkins-client</artifactId>
+    <version>0.3.8</version>
+</dependency>
 ```
 
 ### 常用类-JenkinsHttpClient
-- 封装了调用JenkinsApi的底层方法
-  - JenkinsHttpClient(URI uri, String username, String password)
-  - get(String path)
-  - getFile(URI path)
-  - post(String path, boolean crumbFlag)
-  - post(String path, D data, Class<R> cls)
-  - post_xml(String path, String xml_data, boolean crumbFlag)
-  - ......
 
-![image-20210125115749829](https://gitee.com/JeanLv/study_image/raw/master///image-20210125115749829.png)
+- 封装了调用JenkinsApi的底层方法
+    - JenkinsHttpClient(URI uri, String username, String password)
+    - get(String path)
+    - getFile(URI path)
+    - post(String path, boolean crumbFlag)
+    - post(String path, D data, Class<R> cls)
+    - post_xml(String path, String xml_data, boolean crumbFlag)
+    - ......
+
+![image-20220916155214138](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161552213.png)
 
 ### 常用类-JenkinsServer
 
 - 封装了调用JenkinsAPI的语义级别的方法
 
-  - JenkinsServer(JenkinsHttpConnection client)
-  - getJob(String jobName)
-  - createJob(String jobName, String jobXml, Boolean crumbFlag)
-  - updateJob(String jobName, String jobXml, Boolean crumbFlag)
-  - getJobXml(String jobName)
-  - deleteJob(FolderJob folder, String jobName, Boolean crumbFlag)
-  - ......
+    - JenkinsServer(JenkinsHttpConnection client)
+    - getJob(String jobName)
+    - createJob(String jobName, String jobXml, Boolean crumbFlag)
+    - updateJob(String jobName, String jobXml, Boolean crumbFlag)
+    - getJobXml(String jobName)
+    - deleteJob(FolderJob folder, String jobName, Boolean crumbFlag)
+    - ......
 
-  ![image-20210125135759255](https://gitee.com/JeanLv/study_image/raw/master///image-20210125135759255.png)
+  ![image-20220916155232045](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161552082.png)
 
 ### 常用类-Job
 
 - Jenkins中job对应实体类，有很多实用的语义级别的方法
-  - Job(String name, String url)
-  - build(Job job)
-  - build(Job job, Map<String, String> params)
-  - getFileFromWorkspace(String fileName)
-  - setClient(JenkinsHttpConnection client)
-  - ......
+    - Job(String name, String url)
+    - build(Job job)
+    - build(Job job, Map<String, String> params)
+    - getFileFromWorkspace(String fileName)
+    - setClient(JenkinsHttpConnection client)
+    - ......
 
-![image-20210125140642175](https://gitee.com/JeanLv/study_image/raw/master///image-20210125140642175.png)
+![image-20220916155258133](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161552220.png)
 
 ## 查看Jenkins Api
 
-![image-20210125135530692](https://gitee.com/JeanLv/study_image/raw/master///image-20210125135530692.png)
+![image-20220916155146258](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161551404.png)
 
 Jenkins接口地址：http://ip:port/api/
-
-
 
 ## 示例
 
@@ -73,17 +98,17 @@ Jenkins接口地址：http://ip:port/api/
 
 新建一个自由风格的Jenkins Job，新增一些参数
 
-![image-20210127135250684](https://gitee.com/JeanLv/study_image/raw/master///image-20210127135250684.png)
+![image-20220916155340279](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161553311.png)
 
 ### 2. 获取Jenkins Job的配置数据
 
 - 到Jenkins服务器上，进入到jobs中查看config.xml
 
-  ![image-20210127135519329](https://gitee.com/JeanLv/study_image/raw/master///image-20210127135519329.png)
+  ![image-20220916155401575](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161554619.png)
 
 - 或者请求地址：http://ip:port/job/test/config.xml
 
-  ![image-20210127135212352](https://gitee.com/JeanLv/study_image/raw/master///image-20210127135212352.png)
+  ![image-20220916155429557](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161554591.png)
 
 ### 3. 编写代码，操作Jenkins
 
@@ -109,7 +134,7 @@ Jenkins接口地址：http://ip:port/api/
 
   执行结果：
 
-  ![image-20210127173008543](https://gitee.com/JeanLv/study_image/raw/master///image-20210127173008543.png)
+  ![image-20220916155507747](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161555781.png)
 
   再刷新Jenkins，发现会有一个新的名为test02的Jobs，并查看配置与模板是一样的
 
@@ -142,15 +167,15 @@ Jenkins接口地址：http://ip:port/api/
 
   执行结果：
 
-  ![image-20210127173953206](https://gitee.com/JeanLv/study_image/raw/master///image-20210127173953206.png)
+  ![image-20220916155547839](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161555874.png)
 
-  回到Jenkins进入到test02 Job里：
+回到Jenkins进入到test02 Job里：
 
-  ![image-20210127174047950](https://gitee.com/JeanLv/study_image/raw/master///image-20210127174047950.png)
+![image-20220916155619516](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161556550.png)
 
-  可进入到#1里面查看构建的参数
+可进入到#1里面查看构建的参数
 
-  ![image-20210127174151545](https://gitee.com/JeanLv/study_image/raw/master///image-20210127174151545.png)
+![image-20220916155718389](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161557426.png)
 
 ### 4. 命令执行操作
 
@@ -203,7 +228,6 @@ Jenkins接口地址：http://ip:port/api/
    </project>
    ```
 
-   
 
 2. 编写代码，更新已存在Job，传入命令执行
 
@@ -240,5 +264,5 @@ Jenkins接口地址：http://ip:port/api/
 
 3. 执行成功，回到Jenkins查看构建结果
 
-   ![image-20210127175511772](https://gitee.com/JeanLv/study_image/raw/master///image-20210127175511772.png)
+   ![image-20220916155756920](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209161557967.png)
 

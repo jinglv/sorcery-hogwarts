@@ -31,7 +31,7 @@ import java.util.Objects;
  * @date 2021/01/25
  */
 @Slf4j
-@Api(tags = "测试任务管理")
+@Api(tags = "任务管理")
 @RestController
 @RequestMapping("/task")
 public class TaskController {

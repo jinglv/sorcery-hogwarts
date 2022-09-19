@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2021/01/19
  */
 @Repository
-public interface CaseMapper extends MySqlExtensionMapper<Cases> {
+public interface CaseDAO extends MySqlExtensionMapper<Cases> {
 
     /**
      * 统计总数

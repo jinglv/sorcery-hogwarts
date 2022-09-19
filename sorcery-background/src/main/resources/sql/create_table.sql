@@ -28,10 +28,11 @@ CREATE TABLE `t_project`
     `project_name`              VARCHAR(50) NOT NULL COMMENT '项目名称',
     `git_name`                  VARCHAR(255) NOT NULL COMMENT 'git工程名称',
     `git_address`               VARCHAR(255) NOT NULL COMMENT 'git工程地址',
+    `git_credentials_id`        VARCHAR(255) NOT NULL COMMENT 'git认证id',
     `describe`                  VARCHAR(255) NULL COMMENT '项目描述',
     `image`                     VARCHAR(50) NULL COMMENT '项目图片地址',
-    `del_flag`                  TINYINT         NULL COMMENT '是否删除，0-未删除 1-已删除',
-    `is_clone`                  TINYINT         NULL COMMENT '是否克隆，0-未克隆 1-已克隆',
+    `del_flag`                  TINYINT     NULL COMMENT '是否删除，0-未删除 1-已删除',
+    `create_user_id`            INT         NOT NULL COMMENT '创建人id，test_user主键id',
     `create_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE

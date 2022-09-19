@@ -11,7 +11,9 @@ import com.sorcery.api.entity.User;
 import com.sorcery.api.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,17 +26,13 @@ import java.util.Objects;
  */
 @Slf4j
 @Api(tags = "用户管理")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
     private final TokenDb tokenDb;
-
-    public UserController(UserService userService, TokenDb tokenDb) {
-        this.userService = userService;
-        this.tokenDb = tokenDb;
-    }
 
     /**
      * 用户注册接口
@@ -58,10 +56,10 @@ public class UserController {
             return ResultDTO.fail("用户密码不能为空");
         }
         User user = new User();
-        // CopyUtils.copyPropertiesCglib(registerUser, user);
-        user.setUsername(registerUser.getUsername())
-                .setPassword(registerUser.getPassword())
-                .setEmail(registerUser.getEmail());
+        BeanUtils.copyProperties(registerUser, user);
+//        user.setUsername(registerUser.getUsername())
+//                .setPassword(registerUser.getPassword())
+//                .setEmail(registerUser.getEmail());
         return userService.save(user);
     }
 
@@ -115,7 +113,7 @@ public class UserController {
     public ResultDTO<TokenDTO> logout(HttpServletRequest request) {
         String token = request.getHeader(UserConstants.LOGIN_TOKEN);
         boolean loginFlag = tokenDb.isLogin(token);
-        TokenDTO tokenDto = null;
+        TokenDTO tokenDto;
         if (!loginFlag) {
             return ResultDTO.fail("用户未登录，无需退出");
         } else {

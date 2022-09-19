@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sorcery.api.dao.CaseMapper">
+<mapper namespace="com.sorcery.api.dao.CaseDAO">
     <resultMap id="BaseResultMap" type="com.sorcery.api.entity.Cases">
         <!--
           WARNING - @mbg.generated
@@ -15,14 +15,14 @@
         <result column="case_data" jdbcType="LONGVARCHAR" property="caseData"/>
     </resultMap>
     <select id="count" resultType="java.lang.Integer">
-        select count(1) from `test_case` tc where tc.`create_user_id` = #{params.createUserId}
+        select count(1) from `t_case` tc where tc.`create_user_id` = #{params.createUserId}
         <if test="params.caseName != null and params.caseName != '' ">
             and tc.`case_name` like concat('%', #{params.caseName}, '%')
         </if>
         and tc.`del_flag` = 1
     </select>
     <select id="list" resultType="com.sorcery.api.entity.Cases">
-        select * from `test_case` tc where tc.`create_user_id` = #{params.createUserId}
+        select * from `t_case` tc where tc.`create_user_id` = #{params.createUserId}
         <if test="params.caseName != null and params.caseName != '' ">
             and tc.`case_name` like concat('%', #{params.caseName}, '%')
         </if>

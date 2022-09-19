@@ -20,13 +20,13 @@
     </resultMap>
 
     <select id="count" resultType="java.lang.Integer">
-        select count(1) from `test_jenkins` tj where tj.`create_user_id` = #{params.createUserId}
+        select count(1) from `t_jenkins` tj where tj.`create_user_id` = #{params.createUserId}
         <if test="params.name != null and params.name != '' ">
             and tj.`name` = #{params.name}
         </if>
     </select>
     <select id="list" resultType="com.sorcery.api.entity.Jenkins">
-        select * from `test_jenkins` tj where tj.`create_user_id` = #{params.createUserId}
+        select * from `t_jenkins` tj where tj.`create_user_id` = #{params.createUserId}
         <if test="params.name != null and params.name != '' ">
             and tj.`name` = #{params.name}
         </if>

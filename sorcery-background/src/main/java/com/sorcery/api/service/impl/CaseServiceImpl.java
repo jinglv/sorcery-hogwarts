@@ -3,16 +3,16 @@ package com.sorcery.api.service.impl;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
 import com.sorcery.api.constants.Constants;
-import com.sorcery.api.dao.CaseMapper;
+import com.sorcery.api.dao.CaseDAO;
 import com.sorcery.api.dto.ResultDTO;
 import com.sorcery.api.dto.cases.QueryCaseListDTO;
 import com.sorcery.api.dto.page.PageTableRequest;
 import com.sorcery.api.dto.page.PageTableResponse;
 import com.sorcery.api.entity.Cases;
 import com.sorcery.api.service.CaseService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
@@ -27,13 +27,10 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CaseServiceImpl implements CaseService {
 
-    private final CaseMapper caseMapper;
-
-    public CaseServiceImpl(CaseMapper caseMapper) {
-        this.caseMapper = caseMapper;
-    }
+    private final CaseDAO caseDAO;
 
     /**
      * 新增测试用例
@@ -42,11 +39,10 @@ public class CaseServiceImpl implements CaseService {
      * @return 返回接口测试用例保存结果
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ResultDTO<Cases> save(Cases cases) {
         // 设置测试用例未逻辑删除的标识
         cases.setDelFlag(Constants.DEL_FLAG_ONE);
-        int result = caseMapper.insertUseGeneratedKeys(cases);
+        int result = caseDAO.insertUseGeneratedKeys(cases);
         Assert.isFalse(result != 1, "新增测试用例失败");
         return ResultDTO.success("成功", cases);
     }
@@ -65,7 +61,7 @@ public class CaseServiceImpl implements CaseService {
         queryCase.setId(caseId)
                 .setCreateUserId(createUserId)
                 .setDelFlag(Constants.DEL_FLAG_ONE);
-        Cases result = caseMapper.selectOne(queryCase);
+        Cases result = caseDAO.selectOne(queryCase);
         // 如果为空，则提示
         if (Objects.isNull(result)) {
             return ResultDTO.fail("未查到测试用例信息");
@@ -73,7 +69,7 @@ public class CaseServiceImpl implements CaseService {
         // 设置测试用例逻辑删除（del_flag=0）
         result.setDelFlag(Constants.DEL_FLAG_ZERO);
         // 数据库更新测试用例
-        int update = caseMapper.updateByPrimaryKey(result);
+        int update = caseDAO.updateByPrimaryKey(result);
         Assert.isFalse(update != 1, "逻辑删除（更新）测试用例失败");
         return ResultDTO.success("成功");
     }
@@ -91,7 +87,7 @@ public class CaseServiceImpl implements CaseService {
         queryCase.setId(cases.getId())
                 .setCreateUserId(cases.getCreateUserId())
                 .setDelFlag(Constants.DEL_FLAG_ONE);
-        Cases result = caseMapper.selectOne(queryCase);
+        Cases result = caseDAO.selectOne(queryCase);
         if (Objects.isNull(result)) {
             return ResultDTO.fail("未查到测试用例信息");
         }
@@ -100,7 +96,7 @@ public class CaseServiceImpl implements CaseService {
         cases.setUpdateTime(new Date());
         cases.setDelFlag(Constants.DEL_FLAG_ONE);
         // 数据库更新测试用例
-        int update = caseMapper.updateByPrimaryKey(cases);
+        int update = caseDAO.updateByPrimaryKey(cases);
         Assert.isFalse(update != 1, "修改测试用例信息失败");
         return ResultDTO.success("成功");
     }
@@ -119,7 +115,7 @@ public class CaseServiceImpl implements CaseService {
         queryCase.setId(caseId)
                 .setCreateUserId(createUserId)
                 .setDelFlag(Constants.DEL_FLAG_ONE);
-        Cases result = caseMapper.selectOne(queryCase);
+        Cases result = caseDAO.selectOne(queryCase);
         //如果为空，则提示，也可以直接返回成功
         if (Objects.isNull(result)) {
             return ResultDTO.fail("未查到测试用例信息");
@@ -140,9 +136,9 @@ public class CaseServiceImpl implements CaseService {
         Integer pageNum = pageTableRequest.getPageNum();
         Integer pageSize = pageTableRequest.getPageSize();
         //总数
-        Integer recordsTotal = caseMapper.count(params);
+        Integer recordsTotal = caseDAO.count(params);
         //分页查询数据
-        List<Cases> hogwartsTestJenkinsList = caseMapper.list(params, (pageNum - 1) * pageSize, pageSize);
+        List<Cases> hogwartsTestJenkinsList = caseDAO.list(params, (pageNum - 1) * pageSize, pageSize);
 
         PageTableResponse<Cases> casesPageTableResponse = new PageTableResponse<>();
         casesPageTableResponse.setRecordsTotal(recordsTotal);
@@ -166,7 +162,7 @@ public class CaseServiceImpl implements CaseService {
         queryCase.setCreateUserId(createUserId).setId(caseId);
         log.info("根据测试用例id查询case原始数据-查库入参：{}", JSONUtil.parse(queryCase));
 
-        Cases result = caseMapper.selectOne(queryCase);
+        Cases result = caseDAO.selectOne(queryCase);
         if (Objects.isNull(result)) {
             return ResultDTO.fail("测试用例信息未查到");
         }

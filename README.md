@@ -8,3 +8,20 @@
 
 - 后端：Java8 SpringBoot
 - 前端：vue
+
+
+
+## Git
+
+提交代码
+
+```shell
+git add .
+git commit -m "first commit"
+git push -u origin main
+```
+
+
+
+## 功能介绍
+

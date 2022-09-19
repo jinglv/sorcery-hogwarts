@@ -19,7 +19,7 @@ public class Token implements Serializable {
     /**
      * 登录需要的token
      */
-    private String token;
+    private String loginToken;
 
     /**
      * 到期时间

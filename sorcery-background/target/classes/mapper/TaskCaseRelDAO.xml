@@ -27,7 +27,7 @@
         tt.`update_time` AS updateTime
         FROM (
         SELECT *
-        FROM `test_task_case_rel` ttcr
+        FROM `t_task_case_rel` ttcr
         WHERE ttcr.`create_user_id` = #{params.createUserId} AND ttcr.`task_id` = #{params.taskId}
         ) tt
         LEFT JOIN `test_case tc` ON tt.`case_id` = tc.`id`

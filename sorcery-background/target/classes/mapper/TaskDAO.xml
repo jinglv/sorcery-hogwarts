@@ -21,21 +21,21 @@
 
     <select id="getTaskByType" resultType="com.sorcery.api.dto.report.TaskDataDTO">
         SELECT count(1) taskCount, `task_type` taskKey
-        FROM `test_task`
+        FROM `t_task`
         WHERE `create_user_id` = #{createUserId}
         GROUP BY `task_type`
     </select>
 
     <select id="getTaskByStatus" resultType="com.sorcery.api.dto.report.TaskDataDTO">
         SELECT count(1) taskCount, `status` taskKey
-        FROM `test_task`
+        FROM `t_task`
         WHERE `create_user_id` = #{createUserId}
         GROUP BY `status`
     </select>
 
     <select id="getCaseCountByTask" resultType="com.sorcery.api.entity.Task">
         SELECT *
-        FROM `test_task`
+        FROM `t_task`
         WHERE `create_user_id` = #{createUserId}
         ORDER BY `id`
         <if test="start != null and end != null ">
@@ -45,7 +45,7 @@
 
     <select id="count" resultType="java.lang.Integer">
         SELECT count(1)
-        FROM `test_task` tt
+        FROM `t_task` tt
         WHERE tt.`create_user_id` = #{params.createUserId}
         <if test="params.name != null and params.name != '' ">
             AND tt.`name` = #{params.name}
@@ -54,7 +54,7 @@
 
     <select id="list" resultType="com.sorcery.api.entity.Task">
         SELECT *
-        FROM `test_task` tt
+        FROM `t_task` tt
         WHERE tt.`create_user_id` = #{params.createUserId}
         <if test="params.name != null and params.name != '' ">
             AND tt.`name` = #{params.name}

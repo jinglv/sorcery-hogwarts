@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         // Token信息
         Token token = new Token();
         String tokenStr = DigestUtils.md5DigestAsHex((System.currentTimeMillis() + username + password).getBytes());
-        token.setToken(tokenStr);
+        token.setLoginToken(tokenStr);
         // 将登陆信息存入token对象中
         TokenDTO tokenDto = new TokenDTO();
         tokenDto.setUserId(queryUser.getId())
