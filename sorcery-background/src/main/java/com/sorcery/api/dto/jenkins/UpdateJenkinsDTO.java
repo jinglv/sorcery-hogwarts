@@ -30,7 +30,7 @@ public class UpdateJenkinsDTO extends BaseDTO {
      * 测试命令
      */
     @ApiModelProperty(value = "测试命令前缀", required = true)
-    private String testCommand;
+    private String command;
 
     /**
      * Jenkins的baseUrl

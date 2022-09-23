@@ -39,6 +39,11 @@ public class Cases extends BaseEntityNew {
      */
     private String remark;
     /**
+     * 项目id
+     */
+    @Column(name = "project_id")
+    private Integer projectId;
+    /**
      * 删除标志 1 未删除 0 已删除
      */
     @Column(name = "del_flag")

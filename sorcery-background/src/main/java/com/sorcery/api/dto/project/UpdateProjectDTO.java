@@ -14,7 +14,6 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "修改项目对象")
 @Data
 public class UpdateProjectDTO extends BaseDTO {
-
     /**
      * 主键
      */
@@ -44,7 +43,7 @@ public class UpdateProjectDTO extends BaseDTO {
      * 项目描述
      */
     @ApiModelProperty(value = "项目描述")
-    private String describe;
+    private String description;
     /**
      * 项目图片
      */

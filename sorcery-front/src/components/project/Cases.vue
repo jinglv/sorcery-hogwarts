@@ -7,10 +7,10 @@
       <v-card>
         <v-card-title>添加测试用例</v-card-title>
         <v-card-text>
-          <v-text-field v-model="caseName" label="测试用例名称"></v-text-field>
-          <v-select v-model="selectType" :items="selectItem" label="选择用例类型"></v-select>
-          <v-textarea v-if="selectType===1" v-model="caseData" label="输入文本信息"></v-textarea>
-          <v-file-input v-if="selectType===2" v-model="file" label="选择文件"></v-file-input>
+          <v-text-field v-model="caseName" label="测试用例名称"/>
+          <v-select v-model="selectType" :items="selectItem" label="选择用例类型"/>
+          <v-textarea v-if="selectType===1" v-model="caseData" label="输入文本信息"/>
+          <v-file-input v-if="selectType===2" v-model="file" label="选择文件"/>
           <v-text-field v-model="remark" label="备注"></v-text-field>
         </v-card-text>
         <v-card-actions>
@@ -26,8 +26,8 @@
       <v-card>
         <v-card-title>生成测试任务</v-card-title>
         <v-card-text>
-          <v-text-field label="测试任务名称" v-model="taskName"></v-text-field>
-          <v-text-field label="备注" v-model="taskRemark"></v-text-field>
+          <v-text-field label="测试任务名称" v-model="taskName"/>
+          <v-text-field label="备注" v-model="taskRemark"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer>
@@ -68,10 +68,10 @@
       <v-card>
         <v-card-title>修改</v-card-title>
         <v-card-text>
-          <v-text-field v-model="caseName" label="用例名称"></v-text-field>
-          <v-textarea v-if="selectType===1" v-model="caseData" label="输入文本信息"></v-textarea>
-          <v-file-input v-if="selectType===2" v-model="file" label="选择文件"></v-file-input>
-          <v-text-field label="备注" v-model="remark"></v-text-field>
+          <v-text-field v-model="caseName" label="用例名称"/>
+          <v-textarea v-if="selectType===1" v-model="caseData" label="输入文本信息"/>
+          <v-file-input v-if="selectType===2" v-model="file" label="选择文件"/>
+          <v-text-field label="备注" v-model="remark" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -82,7 +82,7 @@
     </v-dialog>
     <!--分页显示处理-->
     <v-pagination v-if="pageLength>0" v-model="currentPage" :length="pageLength" @input="getCaseList()"
-                  total-visible="7"></v-pagination>
+                  total-visible="7"/>
   </div>
 </template>
 <script>

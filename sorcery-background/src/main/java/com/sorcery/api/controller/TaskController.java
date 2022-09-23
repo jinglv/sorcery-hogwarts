@@ -66,13 +66,13 @@ public class TaskController {
             return ResultDTO.fail("测试任务名称不能为空");
         }
         List<Integer> caseIdList = taskDto.getCaseIdList();
-        if (Objects.isNull(caseIdList) || caseIdList.size() == 0) {
+        if (Objects.isNull(caseIdList) || caseIdList.isEmpty()) {
             return ResultDTO.fail("测试用例不能为空");
         }
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         log.info("添加测试任务，token信息：{}", JSONUtil.parse(tokenDto));
         addTaskDto.setCreateUserId(tokenDto.getUserId());
-        addTaskDto.setTestJenkinsId(tokenDto.getDefaultJenkinsId());
+        addTaskDto.setJenkinsId(tokenDto.getDefaultJenkinsId());
 
         return taskService.save(taskDto, Constants.TASK_TYPE_ONE);
     }
@@ -231,7 +231,7 @@ public class TaskController {
         // 从TokenDb中获取TokenDTO
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         task.setCreateUserId(tokenDto.getUserId());
-        task.setTestJenkinsId(tokenDto.getDefaultJenkinsId());
+        task.setJenkinsId(tokenDto.getDefaultJenkinsId());
 
         String url = request.getRequestURL().toString();
         log.info("请求地址:{}", url);

@@ -11,7 +11,7 @@ const user = {
     },
     // 用户是否登录
     isLogin(params) {
-        return axios.get('/user/isLogin', {params})
+        return axios.get('/user/is-login', {params})
     },
     // 用户登出
     logout(params) {

@@ -19,16 +19,19 @@ public class CaseDTO extends BaseDTO {
      */
     @ApiModelProperty(value = "测试用例数据", notes = "文件类型case时不传值", required = true)
     private String caseData;
-
     /**
      * 用例名称
      */
     @ApiModelProperty(value = "测试用例名称", required = true)
     private String caseName;
-
     /**
      * 备注
      */
     @ApiModelProperty(value = "测试用例备注")
     private String remark;
+    /**
+     * 项目id
+     */
+    @ApiModelProperty(value = "所属项目")
+    private Integer projectId;
 }

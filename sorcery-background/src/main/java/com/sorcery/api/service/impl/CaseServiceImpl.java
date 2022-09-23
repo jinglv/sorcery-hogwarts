@@ -4,11 +4,13 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
 import com.sorcery.api.constants.Constants;
 import com.sorcery.api.dao.CaseDAO;
+import com.sorcery.api.dao.ProjectDAO;
 import com.sorcery.api.dto.ResultDTO;
 import com.sorcery.api.dto.cases.QueryCaseListDTO;
 import com.sorcery.api.dto.page.PageTableRequest;
 import com.sorcery.api.dto.page.PageTableResponse;
 import com.sorcery.api.entity.Cases;
+import com.sorcery.api.entity.Project;
 import com.sorcery.api.service.CaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,7 @@ import java.util.Objects;
 public class CaseServiceImpl implements CaseService {
 
     private final CaseDAO caseDAO;
+    private final ProjectDAO projectDAO;
 
     /**
      * 新增测试用例
@@ -40,6 +43,13 @@ public class CaseServiceImpl implements CaseService {
      */
     @Override
     public ResultDTO<Cases> save(Cases cases) {
+        Project queryProject = new Project();
+        queryProject.setId(cases.getProjectId())
+                .setDelFlag(Constants.DEL_FLAG_ONE);
+        Project project = projectDAO.selectOne(queryProject);
+        if (Objects.isNull(project)) {
+            return ResultDTO.fail("未查到项目信息");
+        }
         // 设置测试用例未逻辑删除的标识
         cases.setDelFlag(Constants.DEL_FLAG_ONE);
         int result = caseDAO.insertUseGeneratedKeys(cases);
@@ -66,7 +76,7 @@ public class CaseServiceImpl implements CaseService {
         if (Objects.isNull(result)) {
             return ResultDTO.fail("未查到测试用例信息");
         }
-        // 设置测试用例逻辑删除（del_flag=0）
+        // 设置测试用例逻辑删除（del_flag=1）
         result.setDelFlag(Constants.DEL_FLAG_ZERO);
         // 数据库更新测试用例
         int update = caseDAO.updateByPrimaryKey(result);
@@ -82,6 +92,13 @@ public class CaseServiceImpl implements CaseService {
      */
     @Override
     public ResultDTO<Cases> update(Cases cases) {
+        Project queryProject = new Project();
+        queryProject.setId(cases.getProjectId())
+                .setDelFlag(Constants.DEL_FLAG_ONE);
+        Project project = projectDAO.selectOne(queryProject);
+        if (Objects.isNull(project)) {
+            return ResultDTO.fail("未查到项目信息");
+        }
         // 根据传入的测试用例id和创建人id，查询测试用例信息，且该用例未被逻辑删除
         Cases queryCase = new Cases();
         queryCase.setId(cases.getId())

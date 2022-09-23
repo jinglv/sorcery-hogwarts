@@ -12,6 +12,7 @@ import com.sorcery.api.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return 返回接口项目保存结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultDTO<Project> save(Project project) {
         // 获取项目名称
         String projectName = project.getProjectName();
@@ -47,11 +49,13 @@ public class ProjectServiceImpl implements ProjectService {
             return ResultDTO.fail("项目名已存在");
         }
         // 如果项目图片为空，设置默认图片
-        if (Objects.nonNull(project.getImage())) {
+        if (project.getImage() == null || Objects.equals(project.getImage(), "")) {
             project.setImage("/images/62817b622b554e21b094934e59d5539a.jpeg");
         }
         // 设置项目未逻辑删除的标识
         project.setDelFlag(Constants.DEL_FLAG_ONE);
+        project.setCreateTime(new Date());
+        project.setUpdateTime(new Date());
         int result = projectDAO.insertUseGeneratedKeys(project);
         Assert.isFalse(result != 1, "新增项目失败");
         return ResultDTO.success("成功", project);
@@ -110,6 +114,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return 返回接口测试用例删除结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultDTO<Project> delete(Integer projectId, Integer createUserId) {
         // 根据传入的测试用例id和创建人id，查询测试用例信息，且该用例未被逻辑删除
         Project queryProject = new Project();
@@ -136,6 +141,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return 返回接口测试用例更新结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultDTO<Project> update(Project project) {
         // 根据传入的测试用例id和创建人id，查询测试用例信息，且该用例未被逻辑删除
         Project queryProject = new Project();

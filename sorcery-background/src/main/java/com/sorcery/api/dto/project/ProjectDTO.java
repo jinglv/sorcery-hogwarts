@@ -39,10 +39,5 @@ public class ProjectDTO extends BaseDTO {
      * 项目描述
      */
     @ApiModelProperty(value = "项目描述")
-    private String describe;
-    /**
-     * 项目图片
-     */
-    @ApiModelProperty(value = "项目图片")
-    private String image;
+    private String description;
 }

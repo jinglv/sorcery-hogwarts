@@ -63,10 +63,14 @@ public class CaseController {
         if (ObjectUtils.isEmpty(caseDto.getCaseName())) {
             return ResultDTO.fail("测试用例名称不能为空");
         }
+        if (ObjectUtils.isEmpty(caseDto.getProjectId())) {
+            return ResultDTO.fail("所属项目不能为空");
+        }
         Cases cases = new Cases();
         cases.setCaseData(caseDto.getCaseData())
                 .setCaseName(caseDto.getCaseName())
-                .setRemark(caseDto.getRemark());
+                .setRemark(caseDto.getRemark())
+                .setProjectId(caseDto.getProjectId());
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         cases.setCreateUserId(tokenDto.getUserId());
         return caseService.save(cases);

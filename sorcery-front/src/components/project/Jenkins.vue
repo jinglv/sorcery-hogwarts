@@ -97,7 +97,7 @@ export default {
         {text: 'ID', value: 'id'},
         {text: 'Jenkins名称', value: 'name'},
         {text: 'Jenkins地址', value: 'url'},
-        {text: 'Jenkins测试命令', value: 'testCommand'},
+        {text: 'Jenkins测试命令', value: 'command'},
         {text: '测试用例类型', value: 'commandRunCaseType'},
         {text: '测试配置文件后缀', value: 'commandRunCaseSuffix'},
         {text: '是否为默认', value: 'defaultJenkinsFlag'},
@@ -122,7 +122,7 @@ export default {
         jenkinsPassword: this.jenkinsPassword,
         jenkinsUsername: this.jenkinsUsername,
         remark: this.remark,
-        testCommand: this.jenkinsCommand,
+        command: this.jenkinsCommand,
         url: this.jenkinsURL,
         defaultJenkinsFlag: this.defaultJenkinsFlag ? 1 : 0
       }
@@ -154,7 +154,7 @@ export default {
     editJenkins(item) {
       this.editId = item.id
       this.jenkinsName = item.name
-      this.jenkinsCommand = item.testCommand
+      this.jenkinsCommand = item.command
       this.jenkinsURL = item.url
       this.jenkinsUsername = item.jenkinsUsername
       this.jenkinsPassword = item.jenkinsPassword
@@ -173,7 +173,7 @@ export default {
         jenkinsUsername: this.jenkinsUsername,
         jenkinsPassword: this.jenkinsPassword,
         remark: this.remark,
-        testCommand: this.jenkinsCommand,
+        command: this.jenkinsCommand,
         url: this.jenkinsURL,
         defaultJenkinsFlag: this.defaultJenkinsFlag ? 1 : 0
       }

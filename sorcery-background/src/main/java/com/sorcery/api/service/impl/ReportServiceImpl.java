@@ -56,7 +56,7 @@ public class ReportServiceImpl implements ReportService {
         if (ObjectUtils.isEmpty(buildUrl)) {
             return ResultDTO.fail("测试任务的构建地址不存在 " + taskId);
         }
-        Integer testJenkinsId = resultTask.getTestJenkinsId();
+        Integer testJenkinsId = resultTask.getJenkinsId();
         if (Objects.isNull(testJenkinsId)) {
             return ResultDTO.fail("测试任务的jenkinsId不存在 " + taskId);
         }

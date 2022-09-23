@@ -10,7 +10,7 @@
         <result column="git_name" jdbcType="VARCHAR" property="gitName"/>
         <result column="git_address" jdbcType="VARCHAR" property="gitAddress"/>
         <result column="git_credentials_id" jdbcType="VARCHAR" property="gitCredentialsId"/>
-        <result column="describe" jdbcType="VARCHAR" property="describe"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
         <result column="del_flag" jdbcType="TINYINT" property="delFlag"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
@@ -19,14 +19,14 @@
     </resultMap>
     <select id="count" resultType="java.lang.Integer">
         select count(1) from `t_project` tc where tc.`create_user_id` = #{params.createUserId}
-        <if test="params.caseName != null and params.caseName != '' ">
+        <if test="params.projectName != null and params.projectName != '' ">
             and tc.`project_name` like concat('%', #{params.projectName}, '%')
         </if>
         and tc.`del_flag` = 0
     </select>
-    <select id="list" resultType="com.sorcery.api.entity.Cases">
+    <select id="list" resultType="com.sorcery.api.entity.Project">
         select * from `t_project` tc where tc.`create_user_id` = #{params.createUserId}
-        <if test="params.caseName != null and params.caseName != '' ">
+        <if test="params.projectName != null and params.projectName != '' ">
             and tc.`project_name` like concat('%', #{params.projectName}, '%')
         </if>
         and tc.`del_flag` = 0

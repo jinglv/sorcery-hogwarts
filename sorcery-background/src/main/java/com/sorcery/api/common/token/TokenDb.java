@@ -10,6 +10,12 @@ import java.util.Objects;
 
 /**
  * 存储用户登录的token信息（类似缓存管理器）
+ * 1.定义用于缓存token的map(key=token)
+ * 2.获取在线用户数(可选功能)
+ * 3.根据token获取TokenDTO(userId/userName/defaultJenkinsId/token)
+ * 4.用户登录时新增token和TokenDTO
+ * 5.用户退出时根据token移除TokenDTO
+ * 6.判断token是否有效
  *
  * @author jingLv
  * @date 2021/01/18

@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-toolbar color="indigo" dark flat>
-        <v-toolbar-title>Sorcery Test</v-toolbar-title>
+        <v-toolbar-title>Sorcery Hogwarts Test</v-toolbar-title>
       </v-toolbar>
     </v-card>
 
@@ -42,8 +42,8 @@
 export default {
   data() {
     return {
-      username: '',
-      password: ''
+      username: 'admin',
+      password: 'admin'
     }
   },
   methods: {
@@ -62,7 +62,7 @@ export default {
           localStorage.setItem('token', res.data.data.token)
           localStorage.setItem('username', this.username)
           // 登录成功后跳转到测试用例页面
-          this.$router.push({name: 'Cases'})
+          this.$router.push({name: 'Project'})
         }
       })
     }

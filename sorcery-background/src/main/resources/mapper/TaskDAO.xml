@@ -7,7 +7,7 @@
         -->
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="test_jenkins_id" jdbcType="INTEGER" property="testJenkinsId"/>
+        <result column="jenkins_id" jdbcType="INTEGER" property="jenkinsId"/>
         <result column="build_url" jdbcType="VARCHAR" property="buildUrl"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
         <result column="case_count" jdbcType="INTEGER" property="caseCount"/>
@@ -62,6 +62,5 @@
         ORDER BY tt.`update_time` DESC
         LIMIT #{pageNum}, #{pageSize}
     </select>
-
 
 </mapper>

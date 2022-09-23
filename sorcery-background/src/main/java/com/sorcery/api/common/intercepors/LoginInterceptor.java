@@ -27,7 +27,7 @@ import java.util.Objects;
 public class LoginInterceptor implements HandlerInterceptor {
 
     private final TokenDb tokenDb;
-    
+
     /**
      * 这个方法是在访问接口之前执行的，我们只需要在这里写验证登陆状态的业务逻辑，就可以在用户调用指定接口之前验证登陆状态了
      *
@@ -56,7 +56,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (swaggerFlag) {
             return true;
         }
-
+        // 如果为图片地址，直接通过
+        boolean imageFlag = requestUri.contains("images");
+        if (imageFlag) {
+            return true;
+        }
         // 判断请求是否包含token
         if (ObjectUtils.isEmpty(tokenStr)) {
             response.setStatus(401);

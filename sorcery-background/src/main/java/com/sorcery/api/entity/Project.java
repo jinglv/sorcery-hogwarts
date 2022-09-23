@@ -1,5 +1,6 @@
 package com.sorcery.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -47,7 +48,7 @@ public class Project extends BaseEntityNew {
     /**
      * 项目描述
      */
-    private String describe;
+    private String description;
     /**
      * 项目图片
      */
@@ -66,10 +67,12 @@ public class Project extends BaseEntityNew {
      * 创建时间
      */
     @Column(name = "create_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     /**
      * 更新时间
      */
     @Column(name = "update_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 }

@@ -7,7 +7,7 @@
         -->
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="test_command" jdbcType="VARCHAR" property="testCommand"/>
+        <result column="command" jdbcType="VARCHAR" property="command"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="user_name" jdbcType="VARCHAR" property="jenkinsUsername"/>
         <result column="password" jdbcType="VARCHAR" property="jenkinsPassword"/>

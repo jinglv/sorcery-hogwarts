@@ -2,12 +2,6 @@
 
 SpringBoot后台
 
-## 功能介绍
-
-![image-20210318182935192](../../Library/Application Support/typora-user-images/image-20210318182935192.png)
-
-![image-20210318183034598](https://gitee.com/JeanLv/study_image2/raw/master///image-20210318183034598.png)
-
 ## 简单运行脚本
 
 根据不同环境的配置启动服务

@@ -23,7 +23,7 @@ public class QueryProjectListDTO extends BaseDTO {
     @ApiModelProperty(value = "git认证id")
     private String gitCredentialsId;
     @ApiModelProperty(value = "项目描述")
-    private String describe;
+    private String description;
     @ApiModelProperty(value = "项目图片")
     private String image;
     @ApiModelProperty(value = "创建者id(客户端传值无效，以token数据为准)")

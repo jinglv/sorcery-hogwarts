@@ -2,6 +2,7 @@ package com.sorcery.api.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.sorcery.api.common.token.TokenDb;
+import com.sorcery.api.common.utils.FileUtils;
 import com.sorcery.api.constants.UserConstants;
 import com.sorcery.api.dto.ResultDTO;
 import com.sorcery.api.dto.TokenDTO;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -34,6 +36,7 @@ import java.util.Objects;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final FileUtils fileUtils;
     private final TokenDb tokenDb;
 
     /**
@@ -43,9 +46,9 @@ public class ProjectController {
      * @param projectDTO 请求参数
      * @return 返回接口请求结果
      */
-    @ApiOperation(value = "新增测试用例", notes = "新增测试用例")
+    @ApiOperation(value = "新增项目", notes = "新增项目")
     @PostMapping("add")
-    public ResultDTO<Project> save(HttpServletRequest request, @RequestBody ProjectDTO projectDTO) {
+    public ResultDTO<Project> save(HttpServletRequest request, @RequestParam("image") MultipartFile image, ProjectDTO projectDTO) {
         log.info("新增项目,请求参数：{}", JSONUtil.parse(projectDTO));
         if (Objects.isNull(projectDTO)) {
             return ResultDTO.fail("请求参数不能为空");
@@ -53,13 +56,15 @@ public class ProjectController {
         if (ObjectUtils.isEmpty(projectDTO.getProjectName())) {
             return ResultDTO.fail("项目名称不能为空");
         }
+        // 上传图片
+        String url = fileUtils.uploads(image);
         Project project = new Project();
         project.setProjectName(projectDTO.getProjectName())
                 .setGitName(projectDTO.getGitName())
                 .setGitAddress(projectDTO.getGitAddress())
                 .setGitCredentialsId(projectDTO.getGitCredentialsId())
-                .setDescribe(project.getDescribe())
-                .setImage(project.getImage());
+                .setDescription(projectDTO.getDescription())
+                .setImage(url);
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         project.setCreateUserId(tokenDto.getUserId());
         return projectService.save(project);
@@ -152,7 +157,7 @@ public class ProjectController {
                 .setGitName(updateProjectDTO.getGitName())
                 .setGitAddress(updateProjectDTO.getGitAddress())
                 .setGitCredentialsId(updateProjectDTO.getGitCredentialsId())
-                .setDescribe(updateProjectDTO.getDescribe())
+                .setDescription(updateProjectDTO.getDescription())
                 .setImage(updateProjectDTO.getImage());
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         project.setCreateUserId(tokenDto.getUserId());

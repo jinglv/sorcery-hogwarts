@@ -60,7 +60,7 @@ public class JenkinsController {
         Jenkins jenkins = new Jenkins();
         // CopyUtil.copyPropertiesCglib(addHogwartsTestJenkinsDto, hogwartsTestJenkins);
         jenkins.setName(jenkinsDto.getName())
-                .setTestCommand(jenkinsDto.getTestCommand())
+                .setCommand(jenkinsDto.getCommand())
                 .setUrl(jenkinsDto.getUrl())
                 .setJenkinsUsername(jenkinsDto.getJenkinsUsername())
                 .setJenkinsPassword(jenkinsDto.getJenkinsPassword())
@@ -104,7 +104,7 @@ public class JenkinsController {
         // CopyUtil.copyPropertiesCglib(updateHogwartsTestJenkinsDto, hogwartsTestJenkins);
         jenkins.setId(updateJenkinsDto.getId())
                 .setName(updateJenkinsDto.getName())
-                .setTestCommand(updateJenkinsDto.getTestCommand())
+                .setCommand(updateJenkinsDto.getCommand())
                 .setUrl(updateJenkinsDto.getUrl())
                 .setJenkinsUsername(updateJenkinsDto.getJenkinsUsername())
                 .setJenkinsPassword(updateJenkinsDto.getJenkinsPassword())

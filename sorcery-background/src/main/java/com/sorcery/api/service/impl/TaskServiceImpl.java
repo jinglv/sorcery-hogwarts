@@ -22,6 +22,7 @@ import com.sorcery.api.dto.task.QueryTaskListDTO;
 import com.sorcery.api.dto.task.TaskDTO;
 import com.sorcery.api.entity.*;
 import com.sorcery.api.service.TaskService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ import java.util.*;
  * @author jingLv
  * @date 2021/01/21
  */
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -43,14 +45,6 @@ public class TaskServiceImpl implements TaskService {
     private final CaseDAO caseDAO;
     private final TaskCaseRelDAO taskCaseRelDAO;
     private final JenkinsClient jenkinsClient;
-
-    public TaskServiceImpl(TaskDAO taskDAO, JenkinsDAO jenkinsDAO, CaseDAO caseDAO, TaskCaseRelDAO taskCaseRelDAO, JenkinsClient jenkinsClient) {
-        this.taskDAO = taskDAO;
-        this.jenkinsDAO = jenkinsDAO;
-        this.caseDAO = caseDAO;
-        this.taskCaseRelDAO = taskCaseRelDAO;
-        this.jenkinsClient = jenkinsClient;
-    }
 
     /**
      * 新增测试任务信息
@@ -68,7 +62,7 @@ public class TaskServiceImpl implements TaskService {
 
         log.info("新增任务数据：{}", testTask);
         Jenkins queryJenkins = new Jenkins();
-        queryJenkins.setId(testTask.getTestJenkinsId());
+        queryJenkins.setId(testTask.getJenkinsId());
         queryJenkins.setCreateUserId(testTask.getCreateUserId());
         Jenkins result = jenkinsDAO.selectOne(queryJenkins);
         if (Objects.isNull(result)) {
@@ -80,7 +74,7 @@ public class TaskServiceImpl implements TaskService {
         makeTestCommand(testCommand, result, casesList);
         Task task = new Task();
         task.setName(testTask.getName())
-                .setTestJenkinsId(testTask.getTestJenkinsId())
+                .setJenkinsId(testTask.getJenkinsId())
                 .setCreateUserId(testTask.getCreateUserId())
                 .setRemark(testTask.getRemark())
                 .setTaskType(taskType)
@@ -91,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
         int taskInsert = taskDAO.insert(task);
         Assert.isFalse(taskInsert != 1, "新建测试任务失败！");
         // 测试任务与测试用例对应关联，测试任务与测试用例，一对多的关系
-        if (caseIdList.size() > 0) {
+        if (!caseIdList.isEmpty()) {
             List<TaskCaseRel> testTaskCaseList = new ArrayList<>();
             for (Integer testCaseId : caseIdList) {
                 TaskCaseRel taskCaseRel = new TaskCaseRel();
@@ -320,13 +314,13 @@ public class TaskServiceImpl implements TaskService {
         if (Objects.isNull(jenkins)) {
             throw new ServiceException("组装测试命令时，Jenkins信息为空");
         }
-        if (Objects.isNull(casesList) || casesList.size() == 0) {
+        if (Objects.isNull(casesList) || casesList.isEmpty()) {
             throw new ServiceException("组装测试命令时，测试用例列表信息为空");
         }
-        String runCommand = jenkins.getTestCommand();
+        String runCommand = jenkins.getCommand();
 
         Integer commandRunCaseType = jenkins.getCommandRunCaseType();
-        String systemTestCommand = jenkins.getTestCommand();
+        String systemTestCommand = jenkins.getCommand();
 
         if (ObjectUtils.isEmpty(systemTestCommand)) {
             throw new ServiceException("组装测试命令时，运行的测试命令信息为空");

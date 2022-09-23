@@ -6,6 +6,7 @@ import Jenkins from "@/components/project/Jenkins";
 import Task from "@/components/project/Task";
 import Report from "@/components/project/Report";
 import Cases from "@/components/project/Cases";
+import Project from "@/components/project/Project";
 import Navigation from "@/components/Navigation";
 
 
@@ -30,6 +31,11 @@ const routes = [
         path: '/home',
         component: Navigation,
         children: [
+            {
+                path: 'project',
+                name: 'Project',
+                component: Project
+            },
             {
                 path: 'jenkins',
                 name: 'Jenkins',

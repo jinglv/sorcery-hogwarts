@@ -24,7 +24,7 @@ public class AddTaskDTO extends BaseDTO {
      * 运行测试的Jenkins服务器id
      */
     @ApiModelProperty(value = "运行测试的Jenkins服务器id", required = true)
-    private Integer testJenkinsId;
+    private Integer jenkinsId;
 
     /**
      * 备注

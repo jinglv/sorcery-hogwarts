@@ -27,8 +27,8 @@ public class Task extends BaseEntityNew {
     /**
      * 运行测试的Jenkins服务器id
      */
-    @Column(name = "test_jenkins_id")
-    private Integer testJenkinsId;
+    @Column(name = "jenkins_id")
+    private Integer jenkinsId;
 
     /**
      * Jenkins的构建url

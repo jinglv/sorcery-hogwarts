@@ -57,9 +57,6 @@ public class UserController {
         }
         User user = new User();
         BeanUtils.copyProperties(registerUser, user);
-//        user.setUsername(registerUser.getUsername())
-//                .setPassword(registerUser.getPassword())
-//                .setEmail(registerUser.getEmail());
         return userService.save(user);
     }
 
