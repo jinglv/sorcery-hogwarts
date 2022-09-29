@@ -15,6 +15,7 @@ import com.sorcery.api.service.CaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
@@ -42,6 +43,7 @@ public class CaseServiceImpl implements CaseService {
      * @return 返回接口测试用例保存结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultDTO<Cases> save(Cases cases) {
         Project queryProject = new Project();
         queryProject.setId(cases.getProjectId())
@@ -52,6 +54,8 @@ public class CaseServiceImpl implements CaseService {
         }
         // 设置测试用例未逻辑删除的标识
         cases.setDelFlag(Constants.DEL_FLAG_ONE);
+        cases.setCreateTime(new Date());
+        cases.setUpdateTime(new Date());
         int result = caseDAO.insertUseGeneratedKeys(cases);
         Assert.isFalse(result != 1, "新增测试用例失败");
         return ResultDTO.success("成功", cases);
@@ -65,6 +69,7 @@ public class CaseServiceImpl implements CaseService {
      * @return 返回接口测试用例删除结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultDTO<Cases> delete(Integer caseId, Integer createUserId) {
         // 根据传入的测试用例id和创建人id，查询测试用例信息，且该用例未被逻辑删除
         Cases queryCase = new Cases();
@@ -91,6 +96,7 @@ public class CaseServiceImpl implements CaseService {
      * @return 返回接口测试用例更新结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultDTO<Cases> update(Cases cases) {
         Project queryProject = new Project();
         queryProject.setId(cases.getProjectId())
@@ -155,11 +161,11 @@ public class CaseServiceImpl implements CaseService {
         //总数
         Integer recordsTotal = caseDAO.count(params);
         //分页查询数据
-        List<Cases> hogwartsTestJenkinsList = caseDAO.list(params, (pageNum - 1) * pageSize, pageSize);
+        List<Cases> casesList = caseDAO.list(params, (pageNum - 1) * pageSize, pageSize);
 
         PageTableResponse<Cases> casesPageTableResponse = new PageTableResponse<>();
         casesPageTableResponse.setRecordsTotal(recordsTotal);
-        casesPageTableResponse.setData(hogwartsTestJenkinsList);
+        casesPageTableResponse.setData(casesList);
         return ResultDTO.success("成功", casesPageTableResponse);
     }
 

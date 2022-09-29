@@ -45,7 +45,7 @@ CREATE TABLE `t_project`
 DROP TABLE IF EXISTS `t_jenkins`;
 CREATE TABLE `t_jenkins`
 (
-    `id`                      INT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
+    `id`                      INT NOT NULL AUTO_INCREMENT COMMENT '主键' ,
     `jenkins_name`            VARCHAR(100)        NULL COMMENT '名称',
     `jenkins_url`             VARCHAR(100)        NULL COMMENT 'Jenkins的baseUrl',
     `jenkins_username`        VARCHAR(100)        NULL COMMENT 'Jenkins认证登录用户名',
@@ -67,7 +67,7 @@ CREATE TABLE `t_jenkins`
 DROP TABLE IF EXISTS `t_case`;
 CREATE TABLE `t_case`
 (
-    `id`             INT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
+    `id`             INT NOT NULL AUTO_INCREMENT COMMENT '主键',
     `case_name`      VARCHAR(200) NULL COMMENT '用例名称',
     `case_data`      LONGTEXT     NULL COMMENT '测试数据',
     `remark`         VARCHAR(100) NULL COMMENT '备注',
@@ -75,7 +75,7 @@ CREATE TABLE `t_case`
     `del_flag`       TINYINT      NULL COMMENT '删除标志 0 未删除 1 已删除',
     `create_user_id` INT          NOT NULL COMMENT '创建人id，test_user主键id',
     `create_time`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间'
+    `update_time`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
@@ -86,7 +86,7 @@ CREATE TABLE `t_case`
 DROP TABLE IF EXISTS `t_task`;
 CREATE TABLE `t_task`
 (
-    `id`              INT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
+    `id`              INT NOT NULL AUTO_INCREMENT COMMENT '主键',
     `task_name`       VARCHAR(100)        NULL COMMENT '名称',
     `jenkins_id` INT                 NOT NULL COMMENT '运行测试的Jenkins服务器id',
     `build_url`       VARCHAR(100)        NULL COMMENT 'Jenkins的构建url',
@@ -108,7 +108,7 @@ CREATE TABLE `t_task`
 DROP TABLE IF EXISTS `t_task_case_rel`;
 CREATE TABLE `t_task_case_rel`
 (
-    `id`             INT AUTO_INCREMENT COMMENT '主键' PRIMARY KEY,
+    `id`             INT NOT NULL AUTO_INCREMENT COMMENT '主键',
     `task_id`   INT NULL COMMENT '任务id',
     `case_id`   INT NULL COMMENT '用例id',
     `create_user_id` INT NULL COMMENT '创建人id，test_user主键id',

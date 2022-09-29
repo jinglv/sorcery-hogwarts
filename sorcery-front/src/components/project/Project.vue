@@ -1,6 +1,6 @@
 <template>
     <div>
-      <v-btn color="success" class="btn" @click="addDialog=true">创建</v-btn>
+      <v-btn color="success" class="btn" @click="addDialog = true">创建</v-btn>
       <!--添加Jenkins-->
       <v-dialog v-model="addDialog" width="500px">
         <v-card>
@@ -15,7 +15,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="addDialog=false">取消</v-btn>
+            <v-btn color="primary" text @click="addDialog = false">取消</v-btn>
             <v-btn color="primary" @click="saveProject()">保存</v-btn>
           </v-card-actions>
         </v-card>
@@ -53,10 +53,29 @@
         </v-container>
       </template>
 
-      <!--编辑Jenkins-->
+      <!--项目详情-->
       <v-dialog v-model="detailDialog" width="500px">
         <v-card>
           <v-card-title>项目详情</v-card-title>
+          <v-card-text>
+            <v-text-field v-model="projectDetails.projectName" readonly label="项目名称" />
+            <v-text-field v-model="projectDetails.gitName" readonly label="Git项目名称" />
+            <v-text-field v-model="projectDetails.gitAddress" readonly label="Git项目地址" />
+            <v-text-field v-model="projectDetails.gitCredentialsId" readonly label="Git认证" />
+            <v-text-field v-model="projectDetails.description" readonly label="项目描述" />
+            <v-img :src="projectDetails.image" />
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="detailDialog = false">关闭</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+  
+      <!--编辑Project-->
+      <v-dialog v-model="editDialog" width="500px">
+        <v-card>
+          <v-card-title>编辑项目</v-card-title>
           <v-card-text>
             <v-text-field v-model="projectDetails.projectName" label="项目名称" />
             <v-text-field v-model="projectDetails.gitName" label="Git项目名称" />
@@ -67,34 +86,15 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="detailDialog=false">关闭</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-  
-      <!--编辑Jenkins-->
-      <v-dialog v-model="editDialog" width="500px">
-        <v-card>
-          <v-card-title>编辑项目</v-card-title>
-          <v-card-text>
-            <v-text-field v-model="projectDetails.projectName" label="项目名称" />
-            <v-text-field v-model="projectDetails.gitName" label="Git项目名称" />
-            <v-text-field v-model="projectDetails.gitAddress" label="Git项目地址" />
-            <v-text-field v-model="projectDetails.gitCredentialsId" label="Git认证" />
-            <v-text-field v-model="projectDetails.description" label="项目描述" />
-            <v-file-input multiple v-model="projectDetails.image" label="图片"/>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="editDialog=false">取消</v-btn>
-            <v-btn color="primary" @click="saveEditProject()">保存</v-btn>
+            <v-btn color="primary" text @click="editDialog = false">取消</v-btn>
+            <v-btn color="primary" @click="saveEditProject(projectDetails.id)">保存</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
   
       <!--分页显示处理-->
       <v-pagination v-if="pageLength>0" v-model="currentPage" :length="pageLength" @input="getProjectList()"
-                    total-visible="7"></v-pagination>
+                    total-visible="7"/>
     </div>
   </template>
   <script>
@@ -107,9 +107,8 @@
         gitAddress: '',
         gitCredentialsId: '',
         description: '',
-        image: null,
+        image: [],
         projects: [],
-        editDialog: false,
         currentPage: 1,
         pageLength: 0,
         projectId: 0,
@@ -157,12 +156,11 @@
       },
       // 编辑Jenkins
       editProject(item) {
+        this.getProjectDetail(item)
         this.editDialog = true
-        this.saveEditProject(item)
       },
       // 保存编辑Jenkins
       saveEditProject(item) {
-        this.getProjectDetail(item)
         let params = new FormData()
         params.append('id', item)
         params.append('projectName', this.projectName)
@@ -242,8 +240,8 @@
         })
       },
       detailProject(item) {
-        this.detailDialog = true
         this.getProjectDetail(item)
+        this.detailDialog = true
       },
       // 根据id查询项目详情
       getProjectDetail(item) {

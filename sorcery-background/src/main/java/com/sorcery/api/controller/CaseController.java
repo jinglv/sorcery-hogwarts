@@ -157,7 +157,8 @@ public class CaseController {
         cases.setId(updateCaseDto.getId())
                 .setCaseData(updateCaseDto.getCaseData())
                 .setCaseName(updateCaseDto.getCaseName())
-                .setRemark(updateCaseDto.getRemark());
+                .setRemark(updateCaseDto.getRemark())
+                .setProjectId(updateCaseDto.getProjectId());
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         cases.setCreateUserId(tokenDto.getUserId());
         return caseService.update(cases);

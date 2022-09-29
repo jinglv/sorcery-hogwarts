@@ -19,22 +19,24 @@ public class UpdateCaseDTO extends BaseDTO {
      */
     @ApiModelProperty(value = "测试用例主键", required = true)
     private Integer id;
-
     /**
      * 测试用例数据
      */
     @ApiModelProperty(value = "测试用例数据", required = true)
     private String caseData;
-
     /**
      * 用例名称
      */
     @ApiModelProperty(value = "测试用例名称", required = true)
     private String caseName;
-
     /**
      * 备注
      */
     @ApiModelProperty(value = "测试用例备注", required = true)
     private String remark;
+    /**
+     * 项目id
+     */
+    @ApiModelProperty(value = "所属项目")
+    private Integer projectId;
 }
