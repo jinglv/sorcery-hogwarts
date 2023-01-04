@@ -14,6 +14,7 @@ import com.sorcery.api.entity.Jenkins;
 import com.sorcery.api.service.JenkinsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.Objects;
  * @author jingLv
  * @date 2021/01/19
  */
+@RequiredArgsConstructor
 @Slf4j
 @Api(tags = "Jenkins管理")
 @RestController
@@ -33,11 +35,6 @@ public class JenkinsController {
 
     private final JenkinsService jenkinsService;
     private final TokenDb tokenDb;
-
-    public JenkinsController(JenkinsService jenkinsService, TokenDb tokenDb) {
-        this.jenkinsService = jenkinsService;
-        this.tokenDb = tokenDb;
-    }
 
     /**
      * 新增Jenkins信息
@@ -58,14 +55,12 @@ public class JenkinsController {
             return ResultDTO.success("Jenkins名称不能为空");
         }
         Jenkins jenkins = new Jenkins();
-        // CopyUtil.copyPropertiesCglib(addHogwartsTestJenkinsDto, hogwartsTestJenkins);
         jenkins.setName(jenkinsDto.getName())
                 .setCommand(jenkinsDto.getCommand())
                 .setUrl(jenkinsDto.getUrl())
                 .setJenkinsUsername(jenkinsDto.getJenkinsUsername())
                 .setJenkinsPassword(jenkinsDto.getJenkinsPassword())
                 .setRemark(jenkinsDto.getRemark())
-                .setDefaultJenkinsFlag(jenkinsDto.getDefaultJenkinsFlag())
                 .setCommandRunCaseType(jenkinsDto.getCommandRunCaseType())
                 .setCommandRunCaseSuffix(jenkinsDto.getCommandRunCaseSuffix());
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
@@ -101,7 +96,6 @@ public class JenkinsController {
             return ResultDTO.fail("Jenkins名称不能为空");
         }
         Jenkins jenkins = new Jenkins();
-        // CopyUtil.copyPropertiesCglib(updateHogwartsTestJenkinsDto, hogwartsTestJenkins);
         jenkins.setId(updateJenkinsDto.getId())
                 .setName(updateJenkinsDto.getName())
                 .setCommand(updateJenkinsDto.getCommand())
@@ -109,7 +103,6 @@ public class JenkinsController {
                 .setJenkinsUsername(updateJenkinsDto.getJenkinsUsername())
                 .setJenkinsPassword(updateJenkinsDto.getJenkinsPassword())
                 .setRemark(updateJenkinsDto.getRemark())
-                .setDefaultJenkinsFlag(updateJenkinsDto.getDefaultJenkinsFlag())
                 .setCommandRunCaseType(updateJenkinsDto.getCommandRunCaseType())
                 .setCommandRunCaseSuffix(updateJenkinsDto.getCommandRunCaseSuffix());
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
@@ -154,8 +147,8 @@ public class JenkinsController {
         if (Objects.isNull(jenkinsId)) {
             return ResultDTO.fail("JenkinsId不能为空");
         }
-        TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
-        return jenkinsService.delete(jenkinsId, tokenDto);
+        tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
+        return jenkinsService.delete(jenkinsId);
     }
 
     /**

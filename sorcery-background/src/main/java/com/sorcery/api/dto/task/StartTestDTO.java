@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 执行测试任务类
+ *
  * @author jingLv
  * @date 2021/01/26
  */
@@ -15,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class StartTestDTO extends BaseDTO {
     /**
-     * ID
+     * 任务ID
      */
     @ApiModelProperty(value = "测试任务id", required = true, example = "112")
     private Integer taskId;

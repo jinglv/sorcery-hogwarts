@@ -15,9 +15,15 @@ import lombok.EqualsAndHashCode;
 @Data
 public class QueryJenkinsListDTO extends BaseDTO {
 
+    /**
+     * Jenkins名称
+     */
     @ApiModelProperty(value = "Jenkins名称")
     private String name;
 
+    /**
+     * 创建者id
+     */
     @ApiModelProperty(value = "创建者id(客户端传值无效，以token数据为准)")
     private Integer createUserId;
 }

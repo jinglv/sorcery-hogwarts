@@ -6,12 +6,13 @@ import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.QueueReference;
 import com.sorcery.api.common.exception.ServiceException;
-import com.sorcery.api.common.utils.JenkinsUtils;
-import com.sorcery.api.dao.UserDAO;
+import com.sorcery.api.dao.JenkinsDAO;
+import com.sorcery.api.dao.TaskDAO;
 import com.sorcery.api.dto.ResultDTO;
 import com.sorcery.api.dto.TokenDTO;
 import com.sorcery.api.dto.jenkins.OperateJenkinsJobDTO;
 import com.sorcery.api.entity.Jenkins;
+import com.sorcery.api.entity.Task;
 import com.sorcery.api.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,8 +35,9 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class JenkinsClient {
-    private final UserDAO userDAO;
+    private final JenkinsDAO jenkinsDAO;
     private final JenkinsFactory jenkinsFactory;
+    private final TaskDAO taskDAO;
 
     private final String PREFIX_TIPS = "调用Jenkins异常-";
 
@@ -52,11 +55,6 @@ public class JenkinsClient {
         TokenDTO tokenDto = operateJenkinsJobDto.getTokenDto();
         // 获取传入构建Job的参数
         Map<String, String> params = operateJenkinsJobDto.getParams();
-        // 构建查询用户信息条件，当前登录的用户id，从TokenDTO信息中获取
-        User queryUser = new User();
-        queryUser.setId(tokenDto.getUserId());
-        // 根据已登录的用户id，数据库中查询
-        User resultUser = userDAO.selectOne(queryUser);
         // 拼接Job名称和Job标识
         String jobName = JenkinsUtils.getStartTestJobName(tokenDto.getUserId());
         String jobSign = JenkinsUtils.getJobSignByName(jobName);
@@ -73,26 +71,37 @@ public class JenkinsClient {
         if (ObjectUtils.isEmpty(jobXml)) {
             return ResultDTO.fail("Job配置信息不能为空");
         }
-        // 根据user表中数据决定是新建或更新Job，StartTestJobName如果为空则新建，如果不为空则直接执行
-        String dbJobName = resultUser.getStartTestJobName();
-        if (ObjectUtils.isEmpty(dbJobName)) {
+        Jenkins queryJenkins = new Jenkins();
+        queryJenkins.setId(operateJenkinsJobDto.getJenkins().getId());
+        Jenkins resultResult = jenkinsDAO.selectOne(queryJenkins);
+        Integer jenkinsId = resultResult.getId();
+        // 查询测试任务的JenkinsJobName
+        Task queryTask = new Task();
+        queryTask.setJenkinsId(jenkinsId);
+        Task task = taskDAO.selectOne(queryTask);
+        log.info("任务Id,{}", task.getId());
+        String jenkinsJobName = task.getJenkinsJobName();
+        if (ObjectUtils.isEmpty(jenkinsJobName)) {
             log.info("新建Jenkins执行测试的Job");
             // 获取jenkinsServer，创建Job
-            createOrUpdateJob(jobName, jobXml, tokenDto.getUserId(), tokenDto.getDefaultJenkinsId(), 1);
-            resultUser.setStartTestJobName(jobName);
-            userDAO.updateByPrimaryKeySelective(resultUser);
+            createOrUpdateJob(jobName, jobXml, tokenDto.getUserId(), jenkinsId, 1);
+            // 创建Jenkins Job Name保存数据库
+            // Task updateTask = new Task();
+            task.setJenkinsJobName(jobName)
+                    .setUpdateTime(LocalDateTime.now());
+            taskDAO.updateByPrimaryKey(task);
         } else {
             log.info("更新Jenkins执行测试的Job");
             // 获取jenkinsServer，更新Job
-            createOrUpdateJob(jobName, jobXml, tokenDto.getUserId(), tokenDto.getDefaultJenkinsId(), 0);
+            createOrUpdateJob(jobName, jobXml, tokenDto.getUserId(), jenkinsId, 0);
         }
         try {
             // 获取JenkinsHttpClient
-            JenkinsHttpClient jenkinsHttpClient = jenkinsFactory.getJenkinsHttpClient(tokenDto.getUserId(), tokenDto.getDefaultJenkinsId());
+            JenkinsHttpClient jenkinsHttpClient = jenkinsFactory.getJenkinsHttpClient(tokenDto.getUserId(), jenkinsId);
             // 获取对应的Job，并进行构建
             Job job = getJob(jobName, jenkinsHttpClient, jenkins.getUrl());
             build(job, params);
-            return ResultDTO.success("成功", resultUser);
+            return ResultDTO.success("成功");
         } catch (Exception e) {
             String tips = PREFIX_TIPS + "操作Jenkins的Job异常" + e.getMessage();
             log.error(tips, e);
@@ -111,8 +120,12 @@ public class JenkinsClient {
      */
     public void createOrUpdateJob(String jobName, String jobXml, Integer createUserId, Integer jenkinsId, Integer createJobFlag) {
         JenkinsServer jenkinsServer = jenkinsFactory.getJenkinsServer(createUserId, jenkinsId);
+        // 根据jenkinsId查询Jenkins信息
+        Jenkins queryJenkins = new Jenkins();
+        queryJenkins.setId(jenkinsId);
+        Jenkins jenkins = jenkinsDAO.selectOne(queryJenkins);
         try {
-            if (Objects.nonNull(createJobFlag) && createJobFlag == 1) {
+            if (Objects.nonNull(jenkins) && createJobFlag == 1) {
                 // Job不存在则创建Job
                 jenkinsServer.createJob(null, jobName, jobXml, true);
             } else {

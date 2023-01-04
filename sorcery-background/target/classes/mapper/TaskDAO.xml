@@ -6,8 +6,9 @@
           WARNING - @mbg.generated
         -->
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="task_name" jdbcType="VARCHAR" property="name"/>
         <result column="jenkins_id" jdbcType="INTEGER" property="jenkinsId"/>
+        <result column="jenkins_job_name" jdbcType="INTEGER" property="jenkinsJobName"/>
         <result column="build_url" jdbcType="VARCHAR" property="buildUrl"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
         <result column="case_count" jdbcType="INTEGER" property="caseCount"/>
@@ -16,7 +17,7 @@
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="test_command" jdbcType="LONGVARCHAR" property="testCommand"/>
+        <result column="command" jdbcType="LONGVARCHAR" property="command"/>
     </resultMap>
 
     <select id="getTaskByType" resultType="com.sorcery.api.dto.report.TaskDataDTO">
@@ -33,7 +34,7 @@
         GROUP BY `status`
     </select>
 
-    <select id="getCaseCountByTask" resultType="com.sorcery.api.entity.Task">
+    <select id="getCaseCountByTask" resultType="com.sorcery.api.entity.Task" resultMap="BaseResultMap">
         SELECT *
         FROM `t_task`
         WHERE `create_user_id` = #{createUserId}
@@ -52,10 +53,10 @@
         </if>
     </select>
 
-    <select id="list" resultType="com.sorcery.api.entity.Task">
-        SELECT *
-        FROM `t_task` tt
-        WHERE tt.`create_user_id` = #{params.createUserId}
+    <select id="list" resultType="com.sorcery.api.entity.Task" resultMap="BaseResultMap">
+        SELECT tt.*, tj.jenkins_name as jenkinsName
+        FROM `t_task` tt, `t_jenkins` tj
+        WHERE tt.`create_user_id` = #{params.createUserId} AND tt.jenkins_id = tj.id
         <if test="params.name != null and params.name != '' ">
             AND tt.`name` = #{params.name}
         </if>

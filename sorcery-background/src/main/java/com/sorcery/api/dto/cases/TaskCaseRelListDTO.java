@@ -14,12 +14,21 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "查询任务关联的测试用例详情列表对象")
 @Data
 public class TaskCaseRelListDTO extends BaseDTO {
+    /**
+     * 用例标识
+     */
     @ApiModelProperty(value = "用例标识")
     private String caseSign;
 
+    /**
+     * 任务id
+     */
     @ApiModelProperty(value = "任务id")
     private Integer taskId;
 
+    /**
+     * 创建者id
+     */
     @ApiModelProperty(value = "创建者id(客户端传值无效，以token数据为准)")
     private Integer createUserId;
 }

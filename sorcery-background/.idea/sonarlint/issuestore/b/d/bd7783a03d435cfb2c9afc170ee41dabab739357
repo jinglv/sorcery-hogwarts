@@ -1,7 +1,8 @@
 
-r	java:S116'"VRename this field "PREFIX_TIPS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(š¦õñ8öõÑƒ´0
+k	java:S116*"VRename this field "PREFIX_TIPS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(š¦õñ
 7
-java:S1170'"!Make this final field static too.(š¦õñ
-W	java:S125‹"<This block of commented-out lines of code should be removed.(ìê¼–üÿÿÿÿ
+java:S1170*"!Make this final field static too.(š¦õñ
+]	java:S125Y"<This block of commented-out lines of code should be removed.(¬ò‘±úÿÿÿÿ8®øžðÀ0
+W	java:S125˜"<This block of commented-out lines of code should be removed.(ìê¼–üÿÿÿÿ
 A
-java:S1144™"*Remove this unused private "build" method.(³©Â¾
+java:S1144¦"*Remove this unused private "build" method.(³©Â¾

@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 注册用户对象
+ *
  * @author jingLv
  * @date 2021/01/18
  */

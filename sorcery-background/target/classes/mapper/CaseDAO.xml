@@ -23,7 +23,9 @@
         and tc.`del_flag` = 0
     </select>
     <select id="list" resultType="com.sorcery.api.entity.Cases">
-        select * from `t_case` tc where tc.`create_user_id` = #{params.createUserId}
+        select tc.*, tp.project_name as projectName
+        from `t_case` tc, `t_project` tp
+        where tc.`create_user_id` = #{params.createUserId} AND tc.project_id = tp.id
         <if test="params.caseName != null and params.caseName != '' ">
             and tc.`case_name` like concat('%', #{params.caseName}, '%')
         </if>

@@ -5,9 +5,11 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
+ * 测试任务与测试用例关联
+ *
  * @author jinglv
  * @date 2020/01/19
  */
@@ -45,11 +47,11 @@ public class TaskCaseRel extends BaseEntityNew {
      * 创建时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @Column(name = "update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

@@ -12,6 +12,8 @@ import lombok.experimental.Accessors;
 import java.util.List;
 
 /**
+ * 执行测试任务报告类
+ *
  * @author jingLv
  * @date 2021/01/19
  */
@@ -19,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "执行测试任务类", description = "请求参数类")
+@ApiModel(value = "执行测试任务报告类", description = "请求参数类")
 @Data
 public class TaskReportDTO extends BaseDTO {
     /**

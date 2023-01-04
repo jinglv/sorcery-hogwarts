@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 项目管理实体类
@@ -68,11 +68,11 @@ public class Project extends BaseEntityNew {
      */
     @Column(name = "create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 更新时间
      */
     @Column(name = "update_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

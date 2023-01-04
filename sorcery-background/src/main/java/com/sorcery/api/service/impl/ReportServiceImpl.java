@@ -12,6 +12,7 @@ import com.sorcery.api.dto.report.TaskReportDTO;
 import com.sorcery.api.entity.Jenkins;
 import com.sorcery.api.entity.Task;
 import com.sorcery.api.service.ReportService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -24,16 +25,12 @@ import java.util.Objects;
  * @author jingLv
  * @date 2021/01/25
  */
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class ReportServiceImpl implements ReportService {
     private final TaskDAO taskDAO;
     private final JenkinsDAO jenkinsDAO;
-
-    public ReportServiceImpl(TaskDAO taskDAO, JenkinsDAO jenkinsDAO) {
-        this.taskDAO = taskDAO;
-        this.jenkinsDAO = jenkinsDAO;
-    }
 
     /**
      * 获取allure报告
@@ -85,7 +82,7 @@ public class ReportServiceImpl implements ReportService {
         TaskReportDTO taskReportDto = new TaskReportDTO();
         int taskSum = 0;
         List<TaskDataDTO> taskDataDTOList = taskDAO.getTaskByType(tokenDto.getUserId());
-        if (Objects.isNull(taskDataDTOList) || taskDataDTOList.size() == 0) {
+        if (Objects.isNull(taskDataDTOList) || taskDataDTOList.isEmpty()) {
             ResultDTO.fail("无任务数据");
         }
         List<TaskDataDTO> newtTaskDataDTOList = new ArrayList<>();
@@ -123,7 +120,7 @@ public class ReportServiceImpl implements ReportService {
         TaskReportDTO taskReportDto = new TaskReportDTO();
         int taskSum = 0;
         List<TaskDataDTO> taskDataDTOList = taskDAO.getTaskByStatus(tokenDto.getUserId());
-        if (Objects.isNull(taskDataDTOList) || taskDataDTOList.size() == 0) {
+        if (Objects.isNull(taskDataDTOList) || taskDataDTOList.isEmpty()) {
             ResultDTO.fail("无任务数据");
         }
         List<TaskDataDTO> newtTaskDataDTOList = new ArrayList<>();
@@ -162,7 +159,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ResultDTO<List<Task>> getTaskByCaseCount(TokenDTO tokenDto, Integer start, Integer end) {
         List<Task> taskList = taskDAO.getCaseCountByTask(tokenDto.getUserId(), start, end);
-        if (Objects.isNull(taskList) || taskList.size() == 0) {
+        if (Objects.isNull(taskList) || taskList.isEmpty()) {
             return ResultDTO.fail("无任务数据");
         }
         return ResultDTO.success("成功", taskList);

@@ -18,18 +18,18 @@ public interface CaseDAO extends MySqlExtensionMapper<Cases> {
     /**
      * 统计总数
      *
-     * @param params
-     * @return
+     * @param params 查询测试用例信息
+     * @return int
      */
     Integer count(@Param("params") QueryCaseListDTO params);
 
     /**
      * 列表分页查询
      *
-     * @param params
-     * @param pageNum
-     * @param pageSize
-     * @return
+     * @param params   查询测试用例列表信息
+     * @param pageNum  分页的每页数量
+     * @param pageSize 分页页数
+     * @return 测试用例信息
      */
     List<Cases> list(@Param("params") QueryCaseListDTO params, @Param("pageNum") Integer pageNum,
                      @Param("pageSize") Integer pageSize);

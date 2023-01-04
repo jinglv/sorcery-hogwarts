@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 请求信息对象
+ *
  * @author jingLv
  * @date 2021/01/19
  */

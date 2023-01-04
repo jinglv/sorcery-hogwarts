@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,8 +54,8 @@ public class CaseServiceImpl implements CaseService {
         }
         // 设置测试用例未逻辑删除的标识
         cases.setDelFlag(Constants.DEL_FLAG_ONE);
-        cases.setCreateTime(new Date());
-        cases.setUpdateTime(new Date());
+        cases.setCreateTime(LocalDateTime.now());
+        cases.setUpdateTime(LocalDateTime.now());
         int result = caseDAO.insertUseGeneratedKeys(cases);
         Assert.isFalse(result != 1, "新增测试用例失败");
         return ResultDTO.success("成功", cases);
@@ -116,7 +116,7 @@ public class CaseServiceImpl implements CaseService {
         }
         // 修改测试用例信息
         cases.setCreateTime(result.getCreateTime());
-        cases.setUpdateTime(new Date());
+        cases.setUpdateTime(LocalDateTime.now());
         cases.setDelFlag(Constants.DEL_FLAG_ONE);
         // 数据库更新测试用例
         int update = caseDAO.updateByPrimaryKey(cases);
@@ -162,7 +162,6 @@ public class CaseServiceImpl implements CaseService {
         Integer recordsTotal = caseDAO.count(params);
         //分页查询数据
         List<Cases> casesList = caseDAO.list(params, (pageNum - 1) * pageSize, pageSize);
-
         PageTableResponse<Cases> casesPageTableResponse = new PageTableResponse<>();
         casesPageTableResponse.setRecordsTotal(recordsTotal);
         casesPageTableResponse.setData(casesList);

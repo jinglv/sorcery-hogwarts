@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 测试用例实体
@@ -44,6 +44,11 @@ public class Cases extends BaseEntityNew {
     @Column(name = "project_id")
     private Integer projectId;
     /**
+     * 项目名称
+     */
+    @Transient
+    private String projectName;
+    /**
      * 删除标志 1 未删除 0 已删除
      */
     @Column(name = "del_flag")
@@ -57,10 +62,10 @@ public class Cases extends BaseEntityNew {
      * 创建时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 更新时间
      */
     @Column(name = "update_time")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

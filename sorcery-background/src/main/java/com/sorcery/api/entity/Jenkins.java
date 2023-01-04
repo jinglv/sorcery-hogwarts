@@ -1,14 +1,15 @@
 package com.sorcery.api.entity;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
+ * Jenkins实体
+ *
  * @author jinglv
  * @date 2020/01/22
  */
@@ -26,6 +27,7 @@ public class Jenkins extends BaseEntityNew {
     /**
      * 名称
      */
+    @Column(name = "jenkins_name")
     private String name;
     /**
      * 测试命令
@@ -34,11 +36,12 @@ public class Jenkins extends BaseEntityNew {
     /**
      * Jenkins的baseUrl
      */
+    @Column(name = "jenkins_url")
     private String url;
     /**
      * Jenkins登录用户名
      */
-    @Column(name = "jenkins_user_name")
+    @Column(name = "jenkins_username")
     private String jenkinsUsername;
     /**
      * Jenkins登录密码
@@ -68,17 +71,10 @@ public class Jenkins extends BaseEntityNew {
      * 创建时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 更新时间
      */
     @Column(name = "update_time")
-    private Date updateTime;
-    /**
-     * 此字段不存入数据库
-     * 是否设置为默认服务器 1 是 0 否
-     */
-    @Transient
-    @ApiModelProperty(value = "是否设置为默认服务器 1 是 0 否", required = true)
-    private Integer defaultJenkinsFlag = 0;
+    private LocalDateTime updateTime;
 }

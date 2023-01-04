@@ -15,20 +15,20 @@ import java.util.List;
 @Repository
 public interface ProjectDAO extends MySqlExtensionMapper<Project> {
     /**
-     * 统计总数
+     * 查询项目统计总数
      *
-     * @param params
-     * @return
+     * @param params 查询项目信息
+     * @return int
      */
     Integer count(@Param("params") QueryProjectListDTO params);
 
     /**
      * 列表分页查询
      *
-     * @param params
-     * @param pageNum
-     * @param pageSize
-     * @return
+     * @param params   查询项目信息
+     * @param pageNum  分页的每页数量
+     * @param pageSize 分页页数
+     * @return 项目列表信息
      */
     List<Project> list(@Param("params") QueryProjectListDTO params, @Param("pageNum") Integer pageNum,
                        @Param("pageSize") Integer pageSize);

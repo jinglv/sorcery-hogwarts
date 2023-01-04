@@ -15,7 +15,14 @@ import java.util.List;
  */
 @Repository
 public interface TaskCaseRelDAO extends MySqlExtensionMapper<TaskCaseRel> {
-
+    /**
+     * 查询测试任务与测试用例关联信息
+     *
+     * @param params   查询测试任务与测试用例关联信息
+     * @param pageNum  分页的每页数量
+     * @param pageSize 分页页数
+     * @return 测试任务与测试用例关联列表信息
+     */
     List<TaskCaseRelDetailDTO> listDetail(@Param("params") TaskCaseRelListDTO params, @Param("pageNum") Integer pageNum,
                                           @Param("pageSize") Integer pageSize);
 }

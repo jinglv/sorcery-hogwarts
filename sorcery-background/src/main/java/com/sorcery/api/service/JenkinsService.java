@@ -8,6 +8,8 @@ import com.sorcery.api.dto.page.PageTableResponse;
 import com.sorcery.api.entity.Jenkins;
 
 /**
+ * Jenkins服务层
+ *
  * @author jingLv
  * @date 2021/01/19
  */
@@ -24,11 +26,10 @@ public interface JenkinsService {
     /**
      * 删除Jenkins信息
      *
-     * @param tokenDto  token信息
      * @param jenkinsId jenkins主键id
      * @return 返回接口Jenkins删除结果
      */
-    ResultDTO<Jenkins> delete(Integer jenkinsId, TokenDTO tokenDto);
+    ResultDTO<Jenkins> delete(Integer jenkinsId);
 
     /**
      * 修改Jenkins信息

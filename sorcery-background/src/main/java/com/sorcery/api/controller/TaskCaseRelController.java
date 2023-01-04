@@ -12,6 +12,7 @@ import com.sorcery.api.dto.page.PageTableResponse;
 import com.sorcery.api.service.TaskCaseRelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,16 +27,13 @@ import java.util.Objects;
  */
 @Slf4j
 @Api(tags = "任务与用例关联管理")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/cases/rel")
 public class TaskCaseRelController {
     private final TaskCaseRelService taskCaseRelService;
     private final TokenDb tokenDb;
-
-    public TaskCaseRelController(TaskCaseRelService taskCaseRelService, TokenDb tokenDb) {
-        this.taskCaseRelService = taskCaseRelService;
-        this.tokenDb = tokenDb;
-    }
+    
 
     /**
      * 任务与用例关联管理详情

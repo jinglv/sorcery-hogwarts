@@ -4,6 +4,7 @@ import com.sorcery.api.common.utils.FileUtils;
 import com.sorcery.api.dto.ResultDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,16 +23,13 @@ import java.util.Map;
  */
 @Slf4j
 @Api(tags = "文件管理")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/file")
 public class FileController {
 
     private final FileUtils fileUtils;
-
-    public FileController(FileUtils fileUtils) {
-        this.fileUtils = fileUtils;
-    }
-
+    
     /**
      * 文件上传接口
      *

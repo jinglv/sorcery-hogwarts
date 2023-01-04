@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
+ * SpringBoot启动类
+ *
  * @author jinglv
  * @date 2021/01/18
  */

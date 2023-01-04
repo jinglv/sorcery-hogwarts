@@ -17,6 +17,7 @@ import com.sorcery.api.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,17 +33,13 @@ import java.util.Objects;
  */
 @Slf4j
 @Api(tags = "任务管理")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/task")
 public class TaskController {
 
     private final TaskService taskService;
     private final TokenDb tokenDb;
-
-    public TaskController(TaskService taskService, TokenDb tokenDb) {
-        this.taskService = taskService;
-        this.tokenDb = tokenDb;
-    }
 
     /**
      * 添加测试任务
@@ -72,8 +69,6 @@ public class TaskController {
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         log.info("添加测试任务，token信息：{}", JSONUtil.parse(tokenDto));
         addTaskDto.setCreateUserId(tokenDto.getUserId());
-        addTaskDto.setJenkinsId(tokenDto.getDefaultJenkinsId());
-
         return taskService.save(taskDto, Constants.TASK_TYPE_ONE);
     }
 
@@ -100,9 +95,9 @@ public class TaskController {
             return ResultDTO.fail("任务名称不能为空");
         }
         Task task = new Task();
-        // CopyUtil.copyPropertiesCglib(updateHogwartsTestTaskDto, hogwartsTestTask);
         task.setId(updateTaskDto.getId())
                 .setName(updateTaskDto.getName())
+                .setJenkinsId(updateTaskDto.getJenkinsId())
                 .setRemark(updateTaskDto.getRemark());
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         task.setCreateUserId(tokenDto.getUserId());
@@ -227,11 +222,10 @@ public class TaskController {
 
         Task task = new Task();
         task.setId(startTestDto.getTaskId());
-        task.setTestCommand(startTestDto.getTestCommand());
+        task.setCommand(startTestDto.getTestCommand());
         // 从TokenDb中获取TokenDTO
         TokenDTO tokenDto = tokenDb.getTokenDto(request.getHeader(UserConstants.LOGIN_TOKEN));
         task.setCreateUserId(tokenDto.getUserId());
-        task.setJenkinsId(tokenDto.getDefaultJenkinsId());
 
         String url = request.getRequestURL().toString();
         log.info("请求地址:{}", url);
@@ -239,8 +233,8 @@ public class TaskController {
 
         // 组装RequestInfoDTO参数
         RequestInfoDTO requestInfoDto = new RequestInfoDTO();
-        requestInfoDto.setBaseUrl(url);
-        requestInfoDto.setRequestUrl(url);
+        requestInfoDto.setBaseUrl("http://111.207.194.222:8887");
+        requestInfoDto.setRequestUrl("http://111.207.194.222:8887");
         requestInfoDto.setToken(token);
         log.info("请求参数:{}", JSONUtil.parse(requestInfoDto));
         // 调用startTask并返回结果

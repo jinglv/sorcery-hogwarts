@@ -9,9 +9,6 @@
         <result column="user_name" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="auto_create_case_job_name" jdbcType="VARCHAR" property="autoCreateCaseJobName"/>
-        <result column="start_test_job_name" jdbcType="VARCHAR" property="startTestJobName"/>
-        <result column="default_jenkins_id" jdbcType="INTEGER" property="defaultJenkinsId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>

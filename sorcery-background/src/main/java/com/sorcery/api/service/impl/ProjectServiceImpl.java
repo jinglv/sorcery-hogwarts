@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,8 +54,8 @@ public class ProjectServiceImpl implements ProjectService {
         }
         // 设置项目未逻辑删除的标识
         project.setDelFlag(Constants.DEL_FLAG_ONE);
-        project.setCreateTime(new Date());
-        project.setUpdateTime(new Date());
+        project.setCreateTime(LocalDateTime.now());
+        project.setUpdateTime(LocalDateTime.now());
         int result = projectDAO.insertUseGeneratedKeys(project);
         Assert.isFalse(result != 1, "新增项目失败");
         return ResultDTO.success("成功", project);
@@ -154,7 +154,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
         // 修改测试用例信息
         project.setCreateTime(result.getCreateTime());
-        project.setUpdateTime(new Date());
+        project.setUpdateTime(LocalDateTime.now());
         project.setDelFlag(Constants.DEL_FLAG_ONE);
         // 数据库更新测试用例
         int update = projectDAO.updateByPrimaryKey(project);

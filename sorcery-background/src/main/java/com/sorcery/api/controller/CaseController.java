@@ -100,7 +100,8 @@ public class CaseController {
         //文件类型时需要将文件中的数据进行赋值
         cases.setCaseData(caseDto.getCaseData())
                 .setCaseName(caseDto.getCaseName())
-                .setRemark(caseDto.getRemark());
+                .setRemark(caseDto.getRemark())
+                .setProjectId(caseDto.getProjectId());
         cases.setCaseData(caseData);
         return caseService.save(cases);
     }

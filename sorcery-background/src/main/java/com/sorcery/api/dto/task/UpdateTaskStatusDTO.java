@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 修改任务状态对象
+ *
  * @author jingLv
  * @date 2021/01/26
  */
@@ -15,19 +17,19 @@ import lombok.EqualsAndHashCode;
 @Data
 public class UpdateTaskStatusDTO extends BaseDTO {
     /**
-     * ID
+     * 任务主键
      */
     @ApiModelProperty(value = "任务主键", required = true)
     private Integer taskId;
 
     /**
-     *
+     * 构建地址
      */
     @ApiModelProperty(value = "构建地址", required = true)
     private String buildUrl;
 
     /**
-     *
+     * 测试任务状态码
      */
     @ApiModelProperty(value = "任务状态码", required = true)
     private Integer status;

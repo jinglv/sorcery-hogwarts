@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
 import com.sorcery.api.common.exception.ServiceException;
 import com.sorcery.api.common.jenkins.JenkinsClient;
-import com.sorcery.api.common.utils.JenkinsUtils;
+import com.sorcery.api.common.jenkins.JenkinsUtils;
 import com.sorcery.api.common.utils.StrUtils;
 import com.sorcery.api.constants.Constants;
 import com.sorcery.api.dao.CaseDAO;
@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -78,9 +79,11 @@ public class TaskServiceImpl implements TaskService {
                 .setCreateUserId(testTask.getCreateUserId())
                 .setRemark(testTask.getRemark())
                 .setTaskType(taskType)
-                .setTestCommand(testCommand.toString())
+                .setCommand(testCommand.toString())
                 .setCaseCount(caseIdList.size())
-                .setStatus(Constants.STATUS_ONE);
+                .setStatus(Constants.STATUS_ONE)
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now());
         // 新建测试任务
         int taskInsert = taskDAO.insert(task);
         Assert.isFalse(taskInsert != 1, "新建测试任务失败！");
@@ -91,12 +94,15 @@ public class TaskServiceImpl implements TaskService {
                 TaskCaseRel taskCaseRel = new TaskCaseRel();
                 taskCaseRel.setTaskId(task.getId())
                         .setCaseId(testCaseId)
-                        .setCreateUserId(task.getCreateUserId());
+                        .setCreateUserId(task.getCreateUserId())
+                        .setCreateUserId(task.getCreateUserId())
+                        .setCreateTime(LocalDateTime.now())
+                        .setUpdateTime(LocalDateTime.now());
                 testTaskCaseList.add(taskCaseRel);
             }
             log.info("测试任务详情保存，存入数据库参数：{}", JSONUtil.toJsonStr(testTaskCaseList));
             int taskCaseInsert = taskCaseRelDAO.insertList(testTaskCaseList);
-            Assert.isFalse(taskCaseInsert != 1, "新建测试任务与测试用例关系失败！");
+            Assert.isFalse(taskCaseInsert < 0, "新建测试任务与测试用例关系失败！");
         }
         return ResultDTO.success("成功", task);
     }
@@ -140,8 +146,9 @@ public class TaskServiceImpl implements TaskService {
         if (Objects.isNull(result)) {
             return ResultDTO.fail("未查到测试任务信息");
         }
-        result.setUpdateTime(new Date())
+        result.setUpdateTime(LocalDateTime.now())
                 .setName(task.getName())
+                .setJenkinsId(task.getJenkinsId())
                 .setRemark(task.getRemark());
         int taskUpdate = taskDAO.updateByPrimaryKeySelective(result);
         Assert.isFalse(taskUpdate != 1, "更新测试任务失败！");
@@ -206,16 +213,18 @@ public class TaskServiceImpl implements TaskService {
         if (Objects.isNull(task)) {
             return ResultDTO.fail("测试任务参数不能为空");
         }
-        Integer defaultJenkinsId = tokenDto.getDefaultJenkinsId();
-        if (Objects.isNull(defaultJenkinsId)) {
-            return ResultDTO.fail("未配置默认Jenkins");
+        Task taskResult = taskDAO.selectOne(task);
+        // 获取配置JenkinsId
+        Integer jenkinsId = taskResult.getJenkinsId();
+        if (Objects.isNull(jenkinsId)) {
+            return ResultDTO.fail("未配置Jenkins");
         }
         Jenkins queryJenkins = new Jenkins();
-        queryJenkins.setId(defaultJenkinsId);
+        queryJenkins.setId(jenkinsId);
         queryJenkins.setCreateUserId(tokenDto.getUserId());
         Jenkins resultJenkins = jenkinsDAO.selectOne(queryJenkins);
         if (Objects.isNull(resultJenkins)) {
-            return ResultDTO.fail("默认Jenkins不存在或已失效");
+            return ResultDTO.fail("Jenkins不存在或已失效");
         }
         Task queryTask = new Task();
         queryTask.setId(task.getId());
@@ -223,13 +232,13 @@ public class TaskServiceImpl implements TaskService {
         Task resultTask = taskDAO.selectOne(queryTask);
         if (Objects.isNull(resultTask)) {
             String tips = "未查到测试任务";
-            log.error(tips, resultTask.getId());
+            log.error(tips + ", 任务Id{}", resultTask.getId());
             return ResultDTO.fail(tips);
         }
         // 获取执行Jenkins执行测试命令
-        String testCommandStr = task.getTestCommand();
+        String testCommandStr = task.getCommand();
         if (ObjectUtils.isEmpty(testCommandStr)) {
-            testCommandStr = resultTask.getTestCommand();
+            testCommandStr = resultTask.getCommand();
         }
         if (ObjectUtils.isEmpty(testCommandStr)) {
             return ResultDTO.fail("任务的测试命令不能为空");
@@ -290,7 +299,7 @@ public class TaskServiceImpl implements TaskService {
         if (Constants.STATUS_THREE.equals(result.getStatus())) {
             return ResultDTO.fail("测试任务已完成，无需修改");
         }
-        result.setUpdateTime(new Date());
+        result.setUpdateTime(LocalDateTime.now());
         //仅状态为已完成时修改
         if (Constants.STATUS_THREE.equals(task.getStatus())) {
             result.setBuildUrl(task.getBuildUrl());
@@ -309,8 +318,8 @@ public class TaskServiceImpl implements TaskService {
      */
     private void makeTestCommand(StringBuilder testCommand, Jenkins jenkins, List<Cases> casesList) {
         //打印测试目录
-//        testCommand.append("pwd");
-//        testCommand.append("\n");
+        testCommand.append("pwd");
+        testCommand.append("\n");
         if (Objects.isNull(jenkins)) {
             throw new ServiceException("组装测试命令时，Jenkins信息为空");
         }
@@ -335,11 +344,10 @@ public class TaskServiceImpl implements TaskService {
                 //拼装命令前缀
                 testCommand.append(systemTestCommand).append(" ");
                 //拼装测试数据
-                testCommand.append(cases.getCaseData())
-                        .append("\n");
+                testCommand.append(cases.getCaseData()).append("\n");
             }
         }
-        //文件类型
+        //文件类型 例如 hrun的yaml文件进行执行
         if (commandRunCaseType == 2) {
             String commandRunCaseSuffix = jenkins.getCommandRunCaseSuffix();
             if (ObjectUtils.isEmpty(commandRunCaseSuffix)) {
@@ -348,6 +356,7 @@ public class TaskServiceImpl implements TaskService {
             for (Cases cases : casesList) {
                 //拼装下载文件的curl命令
                 makeCurlCommand(testCommand, cases, commandRunCaseSuffix);
+                // 命令结束后 加换行
                 testCommand.append("\n");
                 //拼装命令前缀
                 testCommand.append(systemTestCommand).append(" ");

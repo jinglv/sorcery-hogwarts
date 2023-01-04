@@ -14,9 +14,15 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "查询测试用例信息列表对象")
 @Data
 public class QueryCaseListDTO extends BaseDTO {
+    /**
+     * 测试用例名称
+     */
     @ApiModelProperty(value = "测试用例名称")
     private String caseName;
 
+    /**
+     * 创建者id
+     */
     @ApiModelProperty(value = "创建者id(客户端传值无效，以token数据为准)")
     private Integer createUserId;
 }

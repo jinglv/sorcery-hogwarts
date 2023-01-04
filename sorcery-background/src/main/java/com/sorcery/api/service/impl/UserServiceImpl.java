@@ -106,7 +106,6 @@ public class UserServiceImpl implements UserService {
         TokenDTO tokenDto = new TokenDTO();
         tokenDto.setUserId(queryUser.getId())
                 .setUsername(queryUser.getUsername())
-                .setDefaultJenkinsId(queryUser.getDefaultJenkinsId())
                 .setToken(tokenStr);
         log.info("登录存入的token信息：{}", JSONUtil.parse(tokenDto));
         // 将Token信息存入TokenDb中

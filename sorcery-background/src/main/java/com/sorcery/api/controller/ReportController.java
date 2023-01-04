@@ -11,6 +11,7 @@ import com.sorcery.api.entity.Task;
 import com.sorcery.api.service.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,17 +25,14 @@ import java.util.Objects;
  */
 @Slf4j
 @Api(tags = "报告管理")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/report")
 public class ReportController {
 
     private final ReportService reportService;
     private final TokenDb tokenDb;
-
-    public ReportController(ReportService reportService, TokenDb tokenDb) {
-        this.reportService = reportService;
-        this.tokenDb = tokenDb;
-    }
+    
 
     /**
      * 根据任务id获取allure报告

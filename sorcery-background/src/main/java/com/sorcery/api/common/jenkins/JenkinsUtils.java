@@ -1,4 +1,4 @@
-package com.sorcery.api.common.utils;
+package com.sorcery.api.common.jenkins;
 
 import cn.hutool.json.JSONObject;
 import com.sorcery.api.constants.Constants;
@@ -49,8 +49,8 @@ public class JenkinsUtils {
     public static StringBuilder getUpdateTaskStatusUrl(RequestInfoDTO requestInfoDto, Task task) {
         StringBuilder updateStatusUrl = new StringBuilder();
         updateStatusUrl.append("curl -X PUT ");
-        updateStatusUrl.append("\"").append(requestInfoDto.getBaseUrl()).append("/task/status \" ");
-        updateStatusUrl.append("-H \"Content-Type: application/json \" ");
+        updateStatusUrl.append("\" ").append(requestInfoDto.getBaseUrl()).append("/task/status\" ");
+        updateStatusUrl.append("-H \"Content-Type: application/json\" ");
         updateStatusUrl.append("-H \"token: ").append(requestInfoDto.getToken()).append("\" ");
         updateStatusUrl.append("-d ");
 
@@ -60,7 +60,7 @@ public class JenkinsUtils {
         json.set("status", Constants.STATUS_THREE);
         // 获取Jenkins中的构建地址
         json.set("buildUrl", "${BUILD_URL}");
-        updateStatusUrl.append("'").append(json.toString()).append("'");
+        updateStatusUrl.append("'").append(json).append("'");
         log.info("返回更新状态的Url：{}", updateStatusUrl);
         return updateStatusUrl;
     }

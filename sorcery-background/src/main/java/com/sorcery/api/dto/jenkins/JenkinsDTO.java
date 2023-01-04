@@ -19,49 +19,36 @@ public class JenkinsDTO extends BaseDTO {
      */
     @ApiModelProperty(value = "Jenkins名称", required = true)
     private String name;
-
     /**
      * 测试命令
      */
     @ApiModelProperty(value = "测试命令前缀", required = true)
     private String command;
-
     /**
      * Jenkins的baseUrl
      */
     @ApiModelProperty(value = "Jenkins的baseUrl", required = true)
     private String url;
-
     /**
      * 用户名
      */
     @ApiModelProperty(value = "Jenkins用户名称", required = true)
     private String jenkinsUsername;
-
     /**
      * 密码
      */
     @ApiModelProperty(value = "Jenkins用户密码", required = true)
     private String jenkinsPassword;
-
     /**
-     * 备注
+     * Jenkins备注
      */
     @ApiModelProperty(value = "Jenkins备注")
     private String remark;
-
     /**
-     * 是否默认Jenkins服务
-     */
-    @ApiModelProperty(value = "是否设置为默认服务器 1 是 0 否", required = true)
-    private Integer defaultJenkinsFlag;
-
-    /**
-     *
+     * 命令运行的测试用例类型  1 文本 2 文件
      */
     @ApiModelProperty(value = "命令运行的测试用例类型  1 文本 2 文件", required = true)
     private Integer commandRunCaseType;
-
     /**
      *
      */

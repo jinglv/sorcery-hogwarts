@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 执行测试任务类
+ *
  * @author jingLv
  * @date 2021/01/19
  */

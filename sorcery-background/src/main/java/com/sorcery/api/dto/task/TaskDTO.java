@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 /**
+ * 新增测试任务类
+ *
  * @author jingLv
  * @date 2021/01/19
  */
@@ -16,9 +18,15 @@ import java.util.List;
 @ApiModel(value = "新增测试任务类", description = "请求参数类")
 @Data
 public class TaskDTO extends BaseDTO {
+    /**
+     * 测试任务信息
+     */
     @ApiModelProperty(value = "测试任务信息", required = true)
     private AddTaskDTO testTask;
 
+    /**
+     * 测试用例的id列表
+     */
     @ApiModelProperty(value = "测试用例的id列表", example = "12", required = true)
     private List<Integer> caseIdList;
 }

@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 修改任务对象
+ *
  * @author jingLv
  * @date 2021/01/26
  */
@@ -25,6 +27,12 @@ public class UpdateTaskDTO extends BaseDTO {
      */
     @ApiModelProperty(value = "任务名称", required = true)
     private String name;
+
+    /**
+     * jenkinsId
+     */
+    @ApiModelProperty(value = "jenkinsId", required = true)
+    private Integer jenkinsId;
 
     /**
      * 备注

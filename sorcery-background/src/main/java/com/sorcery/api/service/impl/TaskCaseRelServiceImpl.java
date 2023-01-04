@@ -7,6 +7,7 @@ import com.sorcery.api.dto.cases.TaskCaseRelListDTO;
 import com.sorcery.api.dto.page.PageTableRequest;
 import com.sorcery.api.dto.page.PageTableResponse;
 import com.sorcery.api.service.TaskCaseRelService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +17,13 @@ import java.util.List;
  * @author jingLv
  * @date 2021/01/22
  */
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class TaskCaseRelServiceImpl implements TaskCaseRelService {
 
     private final TaskCaseRelDAO taskCaseRelDAO;
-
-    public TaskCaseRelServiceImpl(TaskCaseRelDAO taskCaseRelDAO) {
-        this.taskCaseRelDAO = taskCaseRelDAO;
-    }
-
+    
     /**
      * 查询任务关联的详细信息列表
      *
