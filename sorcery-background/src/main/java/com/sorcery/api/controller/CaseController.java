@@ -14,6 +14,7 @@ import com.sorcery.api.entity.Cases;
 import com.sorcery.api.service.CaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.util.ObjectUtils;
@@ -27,21 +28,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
+ * 用例管理
+ *
  * @author jingLv
  * @date 2021/01/19
  */
 @Slf4j
 @Api(tags = "用例管理")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/cases")
 public class CaseController {
     private final CaseService caseService;
     private final TokenDb tokenDb;
 
-    public CaseController(CaseService caseService, TokenDb tokenDb) {
-        this.caseService = caseService;
-        this.tokenDb = tokenDb;
-    }
 
     /**
      * 新增测试用例
@@ -76,6 +76,15 @@ public class CaseController {
         return caseService.save(cases);
     }
 
+    /**
+     * 通过文件新增测试用例
+     *
+     * @param request  servlet request
+     * @param caseFile 上传文件
+     * @param caseDto  用例数据
+     * @return 返回接口请求结果
+     * @throws IOException IO异常
+     */
     @ApiOperation(value = "通过文件新增测试用例", notes = "新增测试用例")
     @PostMapping("file")
     public ResultDTO<Cases> saveFile(HttpServletRequest request, @RequestParam("caseFile") MultipartFile caseFile, CaseDTO caseDto) throws IOException {

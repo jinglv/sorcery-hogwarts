@@ -16,9 +16,15 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "查询任务信息列表对象")
 @Data
 public class QueryTaskListDTO extends BaseDTO {
-    @ApiModelProperty(value = "Jenkins名称")
+    /**
+     * 测试任务名称
+     */
+    @ApiModelProperty(value = "测试任务名称")
     private String name;
 
+    /**
+     * 创建者id
+     */
     @ApiModelProperty(value = "创建者id(客户端传值无效，以token数据为准)")
     private Integer createUserId;
 }

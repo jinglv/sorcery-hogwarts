@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * 报告管理
+ *
  * @author jingLv
  * @date 2021/01/26
  */
@@ -32,7 +34,7 @@ public class ReportController {
 
     private final ReportService reportService;
     private final TokenDb tokenDb;
-    
+
 
     /**
      * 根据任务id获取allure报告

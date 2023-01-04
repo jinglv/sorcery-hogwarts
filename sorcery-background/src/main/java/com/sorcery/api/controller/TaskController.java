@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * 任务管理
+ *
  * @author jingLv
  * @date 2021/01/25
  */
@@ -233,8 +235,8 @@ public class TaskController {
 
         // 组装RequestInfoDTO参数
         RequestInfoDTO requestInfoDto = new RequestInfoDTO();
-        requestInfoDto.setBaseUrl("http://111.207.194.222:8887");
-        requestInfoDto.setRequestUrl("http://111.207.194.222:8887");
+        requestInfoDto.setBaseUrl(url);
+        requestInfoDto.setRequestUrl(url);
         requestInfoDto.setToken(token);
         log.info("请求参数:{}", JSONUtil.parse(requestInfoDto));
         // 调用startTask并返回结果
