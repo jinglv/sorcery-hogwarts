@@ -296,3 +296,7 @@ npm install echarts -S
 
 ![image-20220915154903208](https://jing-images.oss-cn-beijing.aliyuncs.com/img/202209151549244.png)
 
+## 平台使用
+
+### 新增测试用例
+

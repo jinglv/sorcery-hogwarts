@@ -66,9 +66,9 @@ export default {
       headers: [
         {text: 'ID', value: 'id'},
         {text: '测试任务名称', value: 'name'},
-        {text: 'JenkinsId', value: 'testJenkinsId'},
+        {text: 'Jenkins名称', value: 'jenkinsName'},
         {text: '测试用例数量', value: 'caseCount'},
-        {text: '执行脚本', value: 'testCommand'},
+        {text: '执行脚本', value: 'command'},
         {text: '执行状态', value: 'status'},
         {text: '操作', value: 'action'},
       ],

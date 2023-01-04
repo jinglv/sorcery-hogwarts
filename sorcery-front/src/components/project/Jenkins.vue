@@ -6,15 +6,14 @@
       <v-card>
         <v-card-title>添加Jenkins</v-card-title>
         <v-card-text>
-          <v-text-field v-model="jenkinsName" label="Jenkins名称"></v-text-field>
-          <v-text-field v-model="jenkinsURL" label="Jenkins基础地址"></v-text-field>
-          <v-text-field v-model="jenkinsUsername" label="Jenkins认证登录用户名"></v-text-field>
-          <v-text-field v-model="jenkinsPassword" type="password" label="Jenkins认证登录密码"></v-text-field>
-          <v-text-field v-model="jenkinsCommand" label="Jenkins执行命令"></v-text-field>
-          <v-select v-model="commandRunCaseType " :items="runType" label="测试用例类型"></v-select>
-          <v-text-field v-model="commandRunCaseSuffix " label="测试用例后缀名"></v-text-field>
-          <v-text-field v-model="remark" label="备注"></v-text-field>
-          <v-checkbox v-model="defaultJenkinsFlag" label="是否默认为指定Jenkins"></v-checkbox>
+          <v-text-field v-model="jenkinsName" label="Jenkins名称" />
+          <v-text-field v-model="jenkinsURL" label="Jenkins基础地址" />
+          <v-text-field v-model="jenkinsUsername" label="Jenkins认证登录用户名" />
+          <v-text-field v-model="jenkinsPassword" type="password" label="Jenkins认证登录密码" />
+          <v-text-field v-model="jenkinsCommand" label="Jenkins执行命令" />
+          <v-select v-model="commandRunCaseType " :items="runType" label="测试用例类型" />
+          <v-text-field v-model="commandRunCaseSuffix " label="测试用例后缀名" />
+          <v-text-field v-model="remark" label="备注" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -40,10 +39,6 @@
           <v-btn color="success" small @click="editJenkins(item)" class="smallBtn">编辑</v-btn>
           <v-btn color="error" small @click="deleteJenkins(item)" class="smallBtn">删除</v-btn>
         </template>
-        <template v-slot:item.defaultJenkinsFlag="{item}">
-          <div v-if="item.defaultJenkinsFlag===1">是</div>
-          <div v-if="item.defaultJenkinsFlag===0">否</div>
-        </template>
       </v-data-table>
     </template>
 
@@ -60,7 +55,6 @@
           <v-select v-model="commandRunCaseType " :items="runType" label="测试用例类型"></v-select>
           <v-text-field v-model="commandRunCaseSuffix " label="测试用例后缀名"></v-text-field>
           <v-text-field v-model="remark" label="备注"></v-text-field>
-          <v-checkbox v-model="defaultJenkinsFlag" label="是否默认为指定Jenkins"></v-checkbox>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -92,7 +86,6 @@ export default {
       ],
       commandRunCaseSuffix: '',
       remark: '',
-      defaultJenkinsFlag: '',
       headers: [
         {text: 'ID', value: 'id'},
         {text: 'Jenkins名称', value: 'name'},
@@ -100,7 +93,6 @@ export default {
         {text: 'Jenkins测试命令', value: 'command'},
         {text: '测试用例类型', value: 'commandRunCaseType'},
         {text: '测试配置文件后缀', value: 'commandRunCaseSuffix'},
-        {text: '是否为默认', value: 'defaultJenkinsFlag'},
         {text: '操作', value: 'action'},
       ],
       desserts: [],
@@ -123,8 +115,7 @@ export default {
         jenkinsUsername: this.jenkinsUsername,
         remark: this.remark,
         command: this.jenkinsCommand,
-        url: this.jenkinsURL,
-        defaultJenkinsFlag: this.defaultJenkinsFlag ? 1 : 0
+        url: this.jenkinsURL
       }
       this.$api.jenkins.addJenkins(params).then(res => {
         if (res.data.resultCode === 1) {
@@ -174,8 +165,7 @@ export default {
         jenkinsPassword: this.jenkinsPassword,
         remark: this.remark,
         command: this.jenkinsCommand,
-        url: this.jenkinsURL,
-        defaultJenkinsFlag: this.defaultJenkinsFlag ? 1 : 0
+        url: this.jenkinsURL
       }
       this.$api.jenkins.editJenkins(params).then(res => {
         // 调用接口，返回resultCode=1，说明接口调用成功
@@ -245,7 +235,7 @@ export default {
           this.pageLength = Math.ceil(this.rows / 5)
         }
       })
-    },
+    }
   }
 }
 </script>
