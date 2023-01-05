@@ -45,9 +45,10 @@ public class JenkinsClient {
      * 操作Jenkins中的job
      *
      * @param operateJenkinsJobDto 操作Jenkins job信息
+     * @param taskId               测试任务Id
      * @return 返回执行结果
      */
-    public ResultDTO<User> operateJenkinsJob(OperateJenkinsJobDTO operateJenkinsJobDto) throws IOException {
+    public ResultDTO<User> operateJenkinsJob(OperateJenkinsJobDTO operateJenkinsJobDto, Integer taskId) throws IOException {
         log.info("执行Jenkins的Job信息：{}", JSONUtil.toJsonStr(operateJenkinsJobDto));
         // operateJenkinsJobDto中获取Jenkins信息
         Jenkins jenkins = operateJenkinsJobDto.getJenkins();
@@ -77,8 +78,11 @@ public class JenkinsClient {
         Integer jenkinsId = resultResult.getId();
         // 查询测试任务的JenkinsJobName
         Task queryTask = new Task();
-        queryTask.setJenkinsId(jenkinsId);
+        queryTask.setId(taskId);
         Task task = taskDAO.selectOne(queryTask);
+        if (!Objects.equals(task.getJenkinsId(), jenkinsId)) {
+            throw new ServiceException("测试任务taskId：{" + taskId + "}, Jenkins信息错误!");
+        }
         log.info("任务Id,{}", task.getId());
         String jenkinsJobName = task.getJenkinsJobName();
         if (ObjectUtils.isEmpty(jenkinsJobName)) {

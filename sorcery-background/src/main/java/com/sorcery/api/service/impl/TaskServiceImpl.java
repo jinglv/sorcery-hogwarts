@@ -271,7 +271,7 @@ public class TaskServiceImpl implements TaskService {
         operateJenkinsJobDto.setParams(params);
 
         // 调用Jenkins，操作Jenkins
-        ResultDTO<User> resultDto = jenkinsClient.operateJenkinsJob(operateJenkinsJobDto);
+        ResultDTO<User> resultDto = jenkinsClient.operateJenkinsJob(operateJenkinsJobDto, task.getId());
         // 此处抛出异常，阻止事务提交
         if (0 == resultDto.getResultCode()) {
             throw new ServiceException("Jenkins Job执行测试时异常:" + resultDto.getMessage());
