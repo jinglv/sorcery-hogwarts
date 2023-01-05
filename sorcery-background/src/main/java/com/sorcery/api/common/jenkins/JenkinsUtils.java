@@ -49,7 +49,7 @@ public class JenkinsUtils {
     public static StringBuilder getUpdateTaskStatusUrl(RequestInfoDTO requestInfoDto, Task task) {
         StringBuilder updateStatusUrl = new StringBuilder();
         updateStatusUrl.append("curl -X PUT ");
-        updateStatusUrl.append("\" ").append(requestInfoDto.getBaseUrl()).append("/task/status\" ");
+        updateStatusUrl.append("\"").append(requestInfoDto.getBaseUrl()).append("/task/status\" ");
         updateStatusUrl.append("-H \"Content-Type: application/json\" ");
         updateStatusUrl.append("-H \"token: ").append(requestInfoDto.getToken()).append("\" ");
         updateStatusUrl.append("-d ");
