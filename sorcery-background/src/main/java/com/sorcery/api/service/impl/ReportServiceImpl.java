@@ -1,6 +1,5 @@
 package com.sorcery.api.service.impl;
 
-import com.sorcery.api.common.utils.ReportUtils;
 import com.sorcery.api.constants.Constants;
 import com.sorcery.api.dao.JenkinsDAO;
 import com.sorcery.api.dao.TaskDAO;
@@ -62,8 +61,8 @@ public class ReportServiceImpl implements ReportService {
         queryJenkins.setId(testJenkinsId)
                 .setCreateUserId(tokenDto.getUserId());
         Jenkins resultJenkins = jenkinsDAO.selectOne(queryJenkins);
-        // 获取Allure测试报告Url
-        String allureReportUrl = ReportUtils.getAllureReportUrl(buildUrl, resultJenkins, true);
+        // 获取Allure测试报告Url String allureReportUrl = ReportUtils.getAllureReportUrl(buildUrl, resultJenkins, true);
+        String allureReportUrl = buildUrl + "/allure/";
 
         AllureReportDTO allureReportDto = new AllureReportDTO();
         allureReportDto.setTaskId(taskId)
