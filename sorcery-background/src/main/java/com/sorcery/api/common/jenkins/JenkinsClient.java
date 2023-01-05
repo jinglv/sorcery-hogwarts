@@ -57,7 +57,7 @@ public class JenkinsClient {
         // 获取传入构建Job的参数
         Map<String, String> params = operateJenkinsJobDto.getParams();
         // 拼接Job名称和Job标识
-        String jobName = JenkinsUtils.getStartTestJobName(tokenDto.getUserId());
+        String jobName = JenkinsUtils.getStartTestJobName(taskId);
         String jobSign = JenkinsUtils.getJobSignByName(jobName);
         log.info("已拼接的Job名称：{}", jobName);
         log.info("已拼接的Job标识：{}", jobSign);
